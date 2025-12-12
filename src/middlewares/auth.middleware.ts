@@ -40,6 +40,7 @@ export const authMiddleware = async (
             role: true,
           },
         },
+        nip: true,
       },
     });
 
@@ -55,6 +56,7 @@ export const authMiddleware = async (
       username: user.username,
       fullname: user.fullname,
       roles: user.user_roles.map((role) => role.role.name),
+      nip: user.nip,
     };
 
     req.user = formattedUser;
@@ -68,11 +70,16 @@ export const authMiddleware = async (
 };
 
 export const roleCheckMiddleware =
-  (roles: roles["name"]) => (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user || req.user.roles.some((role: string) => !roles.includes(role))) {
+  (roles: roles["name"][]) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user);
+    if (
+      !req.user ||
+      !req.user.roles.some((role: string) => !roles.includes(role))
+    ) {
       return res.status(403).json({
         success: false,
-        message: "Forbidden",
+        message: "Forbidden.",
       });
     }
 
