@@ -26,10 +26,10 @@ export const errorHandler = (
   }
 
   if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {
-    const target = err.meta.driverAdapterError.cause.constraint.index as
-      | string
-      | string[];
+    const target = err.meta.driverAdapterError.cause.constraint.fields as string | string[];
     let cleanName: string;
+
+    console.log("target: ", target);
 
     if (Array.isArray(target)) {
       cleanName = target.join(", ");
