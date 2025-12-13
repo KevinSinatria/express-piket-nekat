@@ -75,7 +75,10 @@ export const roleCheckMiddleware =
     console.log(req.user);
     if (
       !req.user ||
-      !req.user.roles.some((role: string) => !roles.includes(role))
+      !req.user.roles.some(
+        (role: string) =>
+          roles.map((role) => role.toLowerCase()).includes(role.toLowerCase())
+      )
     ) {
       return res.status(403).json({
         success: false,

@@ -1,4 +1,4 @@
-import type { Request, Response, NextFunction, CookieOptions } from "express";
+import type { Request, Response, NextFunction } from "express";
 import type z from "zod";
 import type { userRolesSchema } from "./user-role.schema.js";
 import { userRoleService } from "./user-role.service.js";
