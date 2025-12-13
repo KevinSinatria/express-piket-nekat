@@ -247,7 +247,7 @@ model student_permits {
   hours_end   Int?
 
   // Approval
-  status student_permit_status @default(pending)
+  status student_permit_status @default(PENDING_MAPEL)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -296,7 +296,8 @@ enum users_role {
 }
 
 enum student_permit_status {
-  pending
-  approved
-  rejected
+  PENDING_MAPEL
+  PENDING_PIKET
+  APPROVED
+  REJECTED
 }

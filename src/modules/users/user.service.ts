@@ -64,16 +64,19 @@ export const getAllUsersService = async (
           {
             username: {
               contains: searchTerm,
+              mode: "insensitive",
             },
           },
           {
             fullname: {
               contains: searchTerm,
+              mode: "insensitive",
             },
           },
           {
             nip: {
               contains: searchTerm,
+              mode: "insensitive",
             },
           },
         ],
@@ -88,6 +91,14 @@ export const getAllUsersService = async (
       take: limit || 10,
       orderBy: {
         username: "asc",
+      },
+      select: {
+        id: true,
+        username: true,
+        fullname: true,
+        nip: true,
+        created_at: true,
+        updated_at: true,
       },
     }),
   ]);
