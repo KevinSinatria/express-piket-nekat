@@ -6,6 +6,7 @@ import UserRolesRoutes from "./modules/user-roles/user-role.routes.js";
 import StudentPermitsRoutes from "./modules/student-permits/student-permit.routes.js";
 import RolesRoutes from "./modules/roles/role.routes.js";
 import StudentsRoutes from "./modules/students/student.routes.js";
+import PiketScheduleRoutes from "./modules/piket-schedule/piketSchedule.routes.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/user-roles", UserRolesRoutes);
 router.use("/student-permits", StudentPermitsRoutes);
 router.use("/roles", RolesRoutes);
 router.use("/students", StudentsRoutes);
+router.use("/piket-schedules", PiketScheduleRoutes);
 
 export default router;
