@@ -23,7 +23,7 @@ router.use(authMiddleware, roleCheckMiddleware(["ADMIN"]));
 
 router.post("/", validate(createUserSchema), createUserController);
 router.get("/", validate(getUsersSchema), getAllUsersController);
-router.get(":id", validate(userIdSchema), getUserByIdController);
+router.get("/:id", validate(userIdSchema), getUserByIdController);
 router.put("/:id", validate(updateUserSchema), updateUserController);
 router.delete("/:id", validate(userIdSchema), deleteUserController);
 
