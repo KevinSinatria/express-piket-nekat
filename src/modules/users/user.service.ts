@@ -13,10 +13,7 @@ import {
 
 type CreateUserData = z.infer<typeof createUserSchema>["body"];
 
-export const createUserService = async (
-  prisma: PrismaClient,
-  data: CreateUserData
-) => {
+const create = async (prisma: PrismaClient, data: CreateUserData) => {
   const hashedPassword = await bcrypt.hash(data.password, 12);
 
   const newUser = await prisma.users.create({
@@ -39,7 +36,7 @@ export const createUserService = async (
   return newUser;
 };
 
-export const getAllUsersService = async (
+const getAll = async (
   prisma: PrismaClient,
   query: {
     search?: string;
@@ -83,7 +80,7 @@ export const getAllUsersService = async (
       }
     : {};
 
-  const [totalItems, users] = await prisma.$transaction([
+  const [totalItems, users] = await Promise.all([
     prisma.users.count({ where }),
     prisma.users.findMany({
       where,
@@ -111,7 +108,7 @@ export const getAllUsersService = async (
   };
 };
 
-export const getUserByIdService = async (prisma: PrismaClient, id: string) => {
+const getById = async (prisma: PrismaClient, id: string) => {
   const userData = await prisma.users.findUniqueOrThrow({
     where: {
       id: parseInt(id),
@@ -148,7 +145,37 @@ export const getUserByIdService = async (prisma: PrismaClient, id: string) => {
   return formattedUser;
 };
 
-export const updateUserService = async (
+const getMapelUsers = async (prisma: PrismaClient) => {
+  const mapelUsers = await prisma.users.findMany({
+    where: {
+      user_roles: {
+        some: {
+          role: {
+            name: {
+              contains: "mapel",
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      username: "asc",
+    },
+    select: {
+      id: true,
+      username: true,
+      fullname: true,
+      nip: true,
+      created_at: true,
+      updated_at: true,
+    },
+  });
+
+  return mapelUsers;
+};
+
+const update = async (
   prisma: PrismaClient,
   id: string,
   data: z.infer<typeof updateUserSchema>["body"]
@@ -168,10 +195,19 @@ export const updateUserService = async (
   });
 };
 
-export const deleteUserService = async (prisma: PrismaClient, id: string) => {
+const deleteById = async (prisma: PrismaClient, id: string) => {
   return await prisma.users.delete({
     where: {
       id: parseInt(id),
     },
   });
+};
+
+export const userService = {
+  create,
+  getAll,
+  getById,
+  update,
+  deleteById,
+  getMapelUsers,
 };

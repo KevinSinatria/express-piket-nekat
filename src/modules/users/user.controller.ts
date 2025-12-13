@@ -6,14 +6,8 @@ import type {
   updateUserSchema,
   userIdSchema,
 } from "./user.schema.js";
-import {
-  createUserService,
-  deleteUserService,
-  getAllUsersService,
-  getUserByIdService,
-  updateUserService,
-} from "./user.service.js";
 import { prisma } from "../../config/prisma.js";
+import { userService } from "./user.service.js";
 
 // Tip: 'Request' di sini menggunakan tipe Zod untuk validasi
 type CreateUserRequest = Request<
@@ -41,13 +35,13 @@ type GetAllUsersRequest = Request<
 
 type UserIdRequest = Request<z.infer<typeof userIdSchema>["params"]>;
 
-export const createUserController = async (
+const create = async (
   req: CreateUserRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const newUser = await createUserService(prisma, req.body);
+    const newUser = await userService.create(prisma, req.body);
     res.status(201).json({
       success: true,
       message: "User created successfully",
@@ -58,13 +52,13 @@ export const createUserController = async (
   }
 };
 
-export const getAllUsersController = async (
+const getAll = async (
   req: GetAllUsersRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const result = await getAllUsersService(prisma, req.query);
+    const result = await userService.getAll(prisma, req.query);
     res.status(200).json({
       success: true,
       message: "Users fetched successfully",
@@ -75,14 +69,14 @@ export const getAllUsersController = async (
   }
 };
 
-export const getUserByIdController = async (
-  req: Request,
+const getById = async (
+  req: UserIdRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const user = await getUserByIdService(prisma, id!);
+    const user = await userService.getById(prisma, id!);
     res.status(200).json({
       success: true,
       message: "User fetched successfully",
@@ -93,14 +87,14 @@ export const getUserByIdController = async (
   }
 };
 
-export const updateUserController = async (
+const update = async (
   req: UpdateUserRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { id } = req.params;
-    const updatedUser = await updateUserService(prisma, id!, req.body);
+    const updatedUser = await userService.update(prisma, id!, req.body);
     res.status(200).json({
       success: true,
       message: "User updated successfully",
@@ -111,14 +105,10 @@ export const updateUserController = async (
   }
 };
 
-export const deleteUserController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const deleteById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const deletedUser = await deleteUserService(prisma, id!);
+    const deletedUser = await userService.deleteById(prisma, id!);
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
@@ -127,4 +117,30 @@ export const deleteUserController = async (
   } catch (error) {
     next(error);
   }
+};
+
+const getMapelUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const mapelUsers = await userService.getMapelUsers(prisma);
+    res.status(200).json({
+      success: true,
+      message: "Mapel users fetched successfully",
+      data: mapelUsers,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const userController = {
+  create,
+  getAll,
+  getById,
+  update,
+  deleteById,
+  getMapelUsers,
 };
