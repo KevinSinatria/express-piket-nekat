@@ -22,8 +22,12 @@ const validateRelations = async (prisma: PrismaClient, data: any) => {
   if (!subject) throw new Error("Subject was not found");
 };
 
-type createTeacherAssignmentInput = z.infer<typeof createTeacherAssignmentSchema>["body"];
-type updateTeacherAssignmentInput = z.infer<typeof updateTeacherAssignmentSchema>["body"];
+type createTeacherAssignmentInput = z.infer<
+  typeof createTeacherAssignmentSchema
+>["body"];
+type updateTeacherAssignmentInput = z.infer<
+  typeof updateTeacherAssignmentSchema
+>["body"];
 
 export const createTeacherAssignmentService = async (
   prisma: PrismaClient,
@@ -44,6 +48,7 @@ export const createTeacherAssignmentService = async (
       teacher: { select: { id: true, username: true, fullname: true } },
       class: { select: { id: true, class: true } },
       subject: { select: { id: true, name: true } },
+      users: { select: { id: true, username: true, fullname: true } },
     },
   });
 
@@ -86,7 +91,12 @@ export const getAllTeacherAssignmentsService = async (
   const searchTerm = query.search?.trim();
   if (searchTerm) {
     where.OR = [
-      { assignment_details: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
+      {
+        assignment_details: {
+          contains: searchTerm,
+          mode: Prisma.QueryMode.insensitive,
+        },
+      },
       { reason: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
     ];
   }

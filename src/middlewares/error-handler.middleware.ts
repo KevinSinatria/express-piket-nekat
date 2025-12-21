@@ -26,7 +26,21 @@ export const errorHandler = (
   }
 
   if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {
-    const target = err.meta.driverAdapterError.cause.constraint.fields as string | string[];
+    interface errType {
+      meta?: {
+        driverAdapterError?: {
+          cause?: {
+            constraint?: {
+              fields?: string | string[];
+            };
+          };
+        };
+      };
+    }
+
+    const errTyped = err as errType;
+    const target = errTyped.meta?.driverAdapterError?.cause?.constraint
+      ?.fields as string | string[];
     let cleanName: string;
 
     console.log("target: ", target);

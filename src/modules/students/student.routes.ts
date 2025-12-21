@@ -6,7 +6,7 @@ import {
 } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
-router.use(authMiddleware, roleCheckMiddleware(["ADMIN", "PIKET"]));
+router.use(authMiddleware, roleCheckMiddleware(["ADMIN", "PIKET", "MAPEL"]));
 
 router.get("/", studentController.getAll);
 

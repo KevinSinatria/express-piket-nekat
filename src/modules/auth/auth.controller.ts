@@ -14,7 +14,7 @@ type loginRequest = Request<
 const cookieOptions: CookieOptions = {
   secure: env("NODE_ENV") === "production",
   httpOnly: true,
-  sameSite: "strict",
+  sameSite: "none",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 

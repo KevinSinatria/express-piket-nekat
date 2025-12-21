@@ -119,6 +119,25 @@ const process = async (
 ) => {
   try {
     const { id } = req.params;
+    const path = req.path;
+    const MAPEL_STATUS = ["PENDING_PIKET", "REJECTED"];
+    const PIKET_STATUS = ["APPROVED", "REJECTED"];
+
+    if (path.includes("mapel") && !MAPEL_STATUS.includes(req.body.status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Status must be PENDING_PIKET or REJECTED",
+      });
+    } else if (
+      path.includes("piket") &&
+      !PIKET_STATUS.includes(req.body.status)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Status must be APPROVED or REJECTED",
+      });
+    }
+
     const result = await studentPermitService.process(prisma, id, req.body);
     res.status(200).json({
       success: true,
