@@ -1,0 +1,1077 @@
+openapi: 3.0.1
+info:
+  title: API Piket Siswa Terpadu (Full Scope)
+  description: |
+    API untuk mengelola sistem piket terpadu, mencakup otorisasi, manajemen pengguna, 
+    manajemen data mata pelajaran, jadwal piket, tugas guru, dan surat izin keluar/masuk siswa.
+    Implementasi ini menggunakan alur persetujuan dua tahap (Mapel dan Piket) untuk izin.
+  version: 1.0.0
+tags:
+  - name: Authentication
+    description: Endpoint untuk otorisasi dan manajemen sesi pengguna.
+  - name: User Management
+    description: CRUD dan pengelolaan data pengguna (Admin Only).
+  - name: Student Permits
+    description: CRUD dan proses otorisasi (Mapel & Piket) untuk Surat Izin Siswa.
+  - name: Subject Management
+    description: CRUD dan pengelolaan data Mata Pelajaran (Admin Only).
+  - name: Piket Schedule
+    description: CRUD dan pengelolaan jadwal harian Guru Piket (Admin Only).
+  - name: Teacher Assignment
+    description: CRUD dan pengelolaan tugas guru (Mapel Only).
+paths:
+  /auth/login:
+    post:
+      summary: Login Pengguna
+      deprecated: false
+      description: Proses autentikasi untuk mendapatkan Bearer Token (JWT).
+      tags:
+        - Authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+            example:
+              username: admin
+              password: 1234.bdg
+      responses:
+        '200':
+          description: Autentikasi berhasil. Mengembalikan JWT Token.
+        '401':
+          $ref: '#/components/responses/Unauthorized' 
+      security: [] 
+  /auth/me:
+    get:
+      summary: Mendapatkan Profil Pengguna
+      deprecated: false
+      description: Mengambil data profil pengguna yang sedang login (membutuhkan Bearer Token).
+      tags:
+        - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: Data profil pengguna berhasil diambil.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: [] 
+  /auth/logout:
+    post:
+      summary: Logout Pengguna
+      deprecated: false
+      description: Menghapus sesi dan mengakhiri validitas Bearer Token.
+      tags:
+        - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: Logout berhasil.
+      security:
+        - bearerAuth: [] 
+  /users:
+    post:
+      summary: Membuat Pengguna Baru
+      deprecated: false
+      description: Membuat akun pengguna baru. Hanya bisa diakses oleh ADMIN.
+      tags:
+        - User Management
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                nip:
+                  type: string
+                fullname:
+                  type: string
+              required:
+                - username
+                - password
+                - nip
+                - fullname
+            example:
+              username: Testing
+              password: 1234.bdg
+              nip: '1038349579560'
+              fullname: Testing Full
+      responses:
+        '200':
+          description: Pengguna berhasil dibuat.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Semua Daftar Pengguna
+      deprecated: false
+      description: Mengambil daftar semua pengguna dengan paginasi. Hanya diakses oleh ADMIN.
+      tags:
+        - User Management
+      parameters:
+        - name: limit
+          in: query
+          description: Jumlah item per halaman.
+          required: true
+          example: '20'
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Nomor halaman yang diminta.
+          required: true
+          example: '2'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar pengguna berhasil diambil.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+  /users/{id}:
+    get:
+      summary: Mendapatkan Detail Pengguna
+      deprecated: false
+      description: Mengambil detail pengguna berdasarkan ID.
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik pengguna.
+          required: true
+          example: '41'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detail pengguna berhasil diambil.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+    put:
+      summary: Memperbarui Data Pengguna
+      deprecated: false
+      description: Memperbarui seluruh data pengguna berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik pengguna yang akan diperbarui.
+          required: true
+          example: '61'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                nip:
+                  type: string
+                fullname:
+                  type: string
+              required:
+                - username
+                - password
+                - nip
+                - fullname
+            example:
+              username: Testing
+              password: 1234.bdg
+              nip: '1038349579560'
+              fullname: Testing Full Edited
+      responses:
+        '200':
+          description: Data pengguna berhasil diperbarui.
+        '404':
+          $ref: '#/components/responses/Record not found'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Menghapus Pengguna
+      deprecated: false
+      description: Menghapus pengguna secara permanen berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - User Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik pengguna yang akan dihapus.
+          required: true
+          example: '61'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pengguna berhasil dihapus.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /users/mapel:
+    get:
+      summary: Mendapatkan Daftar Guru Mapel
+      deprecated: false
+      description: Mengambil daftar pengguna yang memiliki role MAPEL.
+      tags:
+        - User Management
+      parameters: []
+      responses:
+        '200':
+          description: Daftar pengguna dengan role MAPEL berhasil diambil.
+      security:
+        - bearerAuth: []
+  /user-roles/{user_id}:
+    post:
+      summary: Menambahkan Role ke Pengguna
+      deprecated: false
+      description: Menambahkan role baru (misal: ADMIN, PIKET, MAPEL) ke pengguna tertentu.
+      tags:
+        - User Management
+      parameters:
+        - name: user_id
+          in: path
+          description: ID unik pengguna yang akan diberi role.
+          required: true
+          example: '62'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_id: 
+                  type: string
+              required:
+                - role_id
+            example:
+              role_id: '1'
+      responses:
+        '200':
+          description: Role berhasil ditambahkan.
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Role Pengguna
+      deprecated: false
+      description: Mengambil daftar role yang dimiliki pengguna tertentu.
+      tags:
+        - User Management
+      parameters:
+        - name: user_id
+          in: path
+          description: ID unik pengguna.
+          required: true
+          example: '62'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar role pengguna berhasil diambil.
+      security:
+        - bearerAuth: []
+  /user-roles/{user_id}/{role_id}:
+    delete:
+      summary: Menghapus Role dari Pengguna
+      deprecated: false
+      description: Menghapus role spesifik dari pengguna.
+      tags:
+        - User Management
+      parameters:
+        - name: user_id
+          in: path
+          description: ID unik pengguna.
+          required: true
+          example: '62'
+          schema:
+            type: string
+        - name: role_id
+          in: path
+          description: "ID unik role yang akan dihapus (misal: 1=ADMIN, 2=PIKET, 3=MAPEL)."
+          required: true
+          example: '2'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Role berhasil dihapus.
+      security:
+        - bearerAuth: []
+  /students:
+    get:
+      summary: Mendapatkan Semua Siswa (Students)
+      deprecated: false
+      description: Mengambil daftar semua data siswa.
+      tags:
+        - Student Permits
+      parameters: []
+      responses:
+        '200':
+          description: Daftar siswa berhasil diambil.
+      security:
+        - bearerAuth: []
+  /student-permits:
+    post:
+      summary: Membuat Surat Izin Siswa Baru
+      deprecated: false
+      description: Guru Piket membuat dan mengajukan surat izin baru. Status awal: PENDING_MAPEL.
+      tags:
+        - Student Permits
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_nis:
+                  type: string
+                  description: NIS siswa yang mengajukan izin.
+                reason:
+                  type: string
+                  description: Alasan keluar/izin siswa.
+                hours_start:
+                  type: integer
+                  description: Jam ke- mulai izin.
+                hours_end:
+                  type: 'null'
+                  description: Jam ke- akhir izin. Null jika izin sampai akhir hari/belum diketahui.
+                mapel_user_id:
+                  type: integer
+                  description: ID pengguna Guru Mapel yang bertugas saat jam pelajaran.
+              required:
+                - student_nis
+                - reason
+                - hours_start
+                - hours_end
+                - mapel_user_id
+            example:
+              student_nis: '232410465'
+              reason: Sakit demam
+              hours_start: 10
+              hours_end: null
+              mapel_user_id: 62
+      responses:
+        '200':
+          description: Surat izin berhasil dibuat dan diajukan.
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Semua Surat Izin
+      deprecated: false
+      description: Mengambil daftar semua surat izin yang sudah diproses atau masih pending (dengan filter dan paginasi).
+      tags:
+        - Student Permits
+      parameters: []
+      responses:
+        '200':
+          description: Daftar surat izin berhasil diambil.
+      security:
+        - bearerAuth: []
+  /student-permits/mapel/pending:
+    get:
+      summary: Mendapatkan Antrean Izin untuk Mapel
+      deprecated: false
+      description: Mengambil daftar surat izin dengan status PENDING_MAPEL yang perlu disetujui oleh Guru Mapel yang bersangkutan.
+      tags:
+        - Student Permits
+      parameters: []
+      responses:
+        '200':
+          description: Daftar antrean Mapel berhasil diambil.
+      security:
+        - bearerAuth: []
+  /student-permits/piket/ready-to-approve:
+    get:
+      summary: Mendapatkan Antrean Izin untuk Piket (Final Approval)
+      deprecated: false
+      description: Mengambil daftar surat izin dengan status PENDING_PIKET yang siap untuk disetujui atau ditolak final oleh Guru Piket.
+      tags:
+        - Student Permits
+      parameters: []
+      responses:
+        '200':
+          description: Daftar antrean Piket berhasil diambil.
+      security:
+        - bearerAuth: []
+  /student-permits/{id}:
+    get:
+      summary: Mendapatkan Detail Surat Izin
+      deprecated: false
+      description: Mengambil detail surat izin spesifik berdasarkan ID.
+      tags:
+        - Student Permits
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Surat Izin.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detail surat izin berhasil diambil.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+    put:
+      summary: Memperbarui Surat Izin
+      deprecated: false
+      description: Memperbarui data surat izin (Hanya bisa dilakukan oleh Piket/Admin jika status masih pending).
+      tags:
+        - Student Permits
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Surat Izin yang akan diperbarui.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_nis:
+                  type: string
+                reason:
+                  type: string
+                hours_start:
+                  type: integer
+                hours_end:
+                  type: 'null'
+                mapel_user_id:
+                  type: integer
+              required:
+                - student_nis
+                - reason
+                - hours_start
+                - hours_end
+                - mapel_user_id
+            example:
+              student_nis: '232410465'
+              reason: Sakit Kepala
+              hours_start: 10
+              hours_end: null
+              mapel_user_id: 62
+      responses:
+        '200':
+          description: Surat izin berhasil diperbarui.
+        '404':
+          $ref: '#/components/responses/Record not found'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Membatalkan/Menghapus Surat Izin
+      deprecated: false
+      description: Membatalkan (Soft Delete: Status CANCELED) surat izin yang masih pending.
+      tags:
+        - Student Permits
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Surat Izin yang akan dibatalkan.
+          required: true
+          example: '2'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Surat izin berhasil dibatalkan (status CANCELED).
+      security:
+        - bearerAuth: []
+  /student-permits/{id}/process/mapel:
+    patch:
+      summary: Proses Otorisasi Guru Mapel
+      deprecated: false
+      description: Guru Mapel menyetujui (PENDING_PIKET) atau menolak (REJECTED) izin.
+      tags:
+        - Student Permits
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Surat Izin.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Status yang diizinkan: PENDING_PIKET (Setuju) atau REJECTED (Tolak).'
+              required:
+                - status
+            example:
+              status: PENDING_PIKET
+      responses:
+        '200':
+          description: Status izin berhasil diperbarui (lanjut ke Piket atau ditolak).
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /student-permits/{id}/process/piket:
+    patch:
+      summary: Proses Otorisasi Guru Piket (Final)
+      deprecated: false
+      description: Guru Piket menyetujui (APPROVED) atau menolak (REJECTED) izin yang sudah disetujui Mapel.
+      tags:
+        - Student Permits
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Surat Izin.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: 'Status yang diizinkan: APPROVED atau REJECTED.'
+              required:
+                - status
+            example:
+              status: APPROVED
+      responses:
+        '200':
+          description: Status izin berhasil diperbarui (Final Approval).
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /subjects:
+    post:
+      summary: Membuat Mata Pelajaran Baru
+      deprecated: false
+      description: Membuat entri mata pelajaran baru. Hanya diakses oleh ADMIN.
+      tags:
+        - Subject Management
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: Basdat
+      responses:
+        '200':
+          description: Mata pelajaran berhasil dibuat.
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Semua Mata Pelajaran
+      deprecated: false
+      description: Mengambil daftar semua mata pelajaran dengan paginasi.
+      tags:
+        - Subject Management
+      parameters:
+        - name: page
+          in: query
+          description: Nomor halaman yang diminta.
+          required: false
+          example: '1'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Jumlah item per halaman.
+          required: false
+          example: '10'
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: Kata kunci pencarian (berdasarkan nama).
+          required: false
+          example: pbo
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar mata pelajaran berhasil diambil.
+      security:
+        - bearerAuth: []
+  /subjects/{id}:
+    get:
+      summary: Mendapatkan Detail Mata Pelajaran
+      deprecated: false
+      description: Mengambil detail mata pelajaran berdasarkan ID.
+      tags:
+        - Subject Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Mata Pelajaran.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detail mata pelajaran berhasil diambil.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+    put:
+      summary: Memperbarui Mata Pelajaran
+      deprecated: false
+      description: Memperbarui seluruh data mata pelajaran berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - Subject Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Mata Pelajaran yang akan diperbarui.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: Bahasa Sunda
+      responses:
+        '200':
+          description: Data mata pelajaran berhasil diperbarui.
+        '404':
+          $ref: '#/components/responses/Record not found'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Menghapus Mata Pelajaran
+      deprecated: false
+      description: Menghapus mata pelajaran secara permanen berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - Subject Management
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Mata Pelajaran yang akan dihapus.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mata pelajaran berhasil dihapus.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /piket-schedules:
+    post:
+      summary: Membuat Jadwal Piket Baru
+      deprecated: false
+      description: Menambahkan guru ke jadwal piket harian. Hanya diakses oleh ADMIN.
+      tags:
+        - Piket Schedule
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                day_of_week:
+                  type: integer
+                  description: 'Hari dalam seminggu (1=Senin, 2=Selasa, dst.)'
+              required:
+                - teacher_user_id
+                - day_of_week
+            example:
+              teacher_user_id: 33
+              day_of_week: 4
+      responses:
+        '200':
+          description: Jadwal piket berhasil dibuat.
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Semua Jadwal Piket
+      deprecated: false
+      description: Mengambil daftar semua jadwal piket, opsional berdasarkan hari.
+      tags:
+        - Piket Schedule
+      parameters:
+        - name: day
+          in: query
+          description: Filter berdasarkan hari dalam seminggu.
+          required: false
+          example: '4'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar jadwal piket berhasil diambil.
+      security:
+        - bearerAuth: []
+  /piket-schedules/{id}:
+    put:
+      summary: Memperbarui Jadwal Piket
+      deprecated: false
+      description: Memperbarui data jadwal piket berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - Piket Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Jadwal Piket yang akan diperbarui.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                day_of_week:
+                  type: integer
+                  description: 'Hari dalam seminggu (1=Senin, 2=Selasa, dst.)'
+              required:
+                - teacher_user_id
+                - day_of_week
+            example:
+              teacher_user_id: 32
+              day_of_week: 1
+      responses:
+        '200':
+          description: Jadwal piket berhasil diperbarui.
+        '404':
+          $ref: '#/components/responses/Record not found'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Menghapus Jadwal Piket
+      deprecated: false
+      description: Menghapus jadwal piket secara permanen berdasarkan ID. Hanya diakses oleh ADMIN.
+      tags:
+        - Piket Schedule
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Jadwal Piket yang akan dihapus.
+          required: true
+          example: '2'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Jadwal piket berhasil dihapus.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /teacher-assignments:
+    post:
+      summary: Membuat Tugas Guru Baru
+      deprecated: false
+      description: Guru MAPEL/ADMIN membuat entri tugas/assignment baru untuk kelas.
+      tags:
+        - Teacher Assignment
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                class_id:
+                  type: integer
+                subject_id:
+                  type: integer
+                assignment_details:
+                  type: string
+                reason:
+                  type: string
+                due_date:
+                  type: string
+              required:
+                - teacher_user_id
+                - class_id
+                - subject_id
+                - assignment_details
+                - reason
+                - due_date
+            example:
+              teacher_user_id: 33
+              class_id: 35
+              subject_id: 1
+              assignment_details: Kumpulkan tugas halaman 50-55
+              reason: Tugas mingguan
+              due_date: '2025-12-20T10:00:00Z'
+      responses:
+        '200':
+          description: Tugas guru berhasil dibuat.
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    get:
+      summary: Mendapatkan Semua Tugas Guru
+      deprecated: false
+      description: Mengambil daftar semua tugas guru dengan filter dan paginasi.
+      tags:
+        - Teacher Assignment
+      parameters:
+        - name: page
+          in: query
+          description: Nomor halaman yang diminta.
+          required: false
+          example: '1'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Jumlah item per halaman.
+          required: false
+          example: '10'
+          schema:
+            type: string
+        - name: class_id
+          in: query
+          description: Filter berdasarkan ID Kelas.
+          required: false
+          example: '35'
+          schema:
+            type: string
+        - name: subject_id
+          in: query
+          description: Filter berdasarkan ID Mata Pelajaran.
+          required: false
+          example: '3'
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: Kata kunci pencarian.
+          required: false
+          example: '50'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar tugas guru berhasil diambil.
+      security:
+        - bearerAuth: []
+  /teacher-assignments/{id}:
+    put:
+      summary: Memperbarui Tugas Guru
+      deprecated: false
+      description: Memperbarui seluruh data tugas guru berdasarkan ID.
+      tags:
+        - Teacher Assignment
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Tugas Guru yang akan diperbarui.
+          required: true
+          example: '2'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                class_id:
+                  type: integer
+                subject_id:
+                  type: integer
+                assignment_details:
+                  type: string
+                reason:
+                  type: string
+                due_date:
+                  type: string
+              required:
+                - teacher_user_id
+                - class_id
+                - subject_id
+                - assignment_details
+                - reason
+                - due_date
+            example:
+              teacher_user_id: 32
+              class_id: 61
+              subject_id: 3
+              assignment_details: Edit halaman pengeditan
+              reason: Coba Edit
+              due_date: '2025-12-15T10:00:00Z'
+      responses:
+        '200':
+          description: Tugas guru berhasil diperbarui.
+        '404':
+          $ref: '#/components/responses/Record not found'
+        '400':
+          $ref: '#/components/responses/Invalid input'
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Menghapus Tugas Guru
+      deprecated: false
+      description: Menghapus tugas guru secara permanen berdasarkan ID.
+      tags:
+        - Teacher Assignment
+      parameters:
+        - name: id
+          in: path
+          description: ID unik Tugas Guru yang akan dihapus.
+          required: true
+          example: '1'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tugas guru berhasil dihapus.
+        '404':
+          $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+components:
+  schemas: {}
+  responses:
+    Record not found:
+      description: Data tidak ditemukan.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 404
+              message:
+                type: string
+                example: Data yang diminta tidak ditemukan.
+            required:
+              - code
+              - message
+    Invalid input:
+      description: Input tidak valid (misalnya validasi gagal).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Validasi input gagal.
+            required:
+              - code
+              - message
+    Unauthorized:
+      description: Akses ditolak (Missing/Invalid Token atau Role tidak sesuai).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 401
+              message:
+                type: string
+                example: Akses tidak sah atau token tidak valid.
+            required:
+              - code
+              - message
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Masukkan JWT Bearer Token yang didapatkan setelah login.'
+security:
+  - bearerAuth: [] 
+servers:
+  - url: http://localhost:5000/ 
+    description: Server Lokal/Development
+  - url: https://piket-nekat-be.vercel.app/
+    description: Server Production

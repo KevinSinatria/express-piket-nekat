@@ -1,0 +1,437 @@
+openapi: 3.0.1
+info:
+  title: Piket Nekat
+  description: ''
+  version: 1.0.0
+tags: []
+paths:
+  /subjects:
+    post:
+      summary: CreateSubject
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: Basdat
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: GetAllSubjects
+      deprecated: false
+      description: ''
+      tags: []
+      parameters:
+        - name: page
+          in: query
+          description: ''
+          required: false
+          example: '1'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ''
+          required: false
+          example: '10'
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: ''
+          required: false
+          example: pbo
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /subjects/1:
+    get:
+      summary: GetSubjectById
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    put:
+      summary: UpdateSubject
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+            example:
+              name: Bahasa Sunda
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    delete:
+      summary: DeleteSubject
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /piket-schedules:
+    post:
+      summary: CreatePiketSchedule
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                day_of_week:
+                  type: integer
+              required:
+                - teacher_user_id
+                - day_of_week
+            example:
+              teacher_user_id: 33
+              day_of_week: 4
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: GetAllPiketSchedules
+      deprecated: false
+      description: ''
+      tags: []
+      parameters:
+        - name: day
+          in: query
+          description: ''
+          required: false
+          example: '4'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /piket-schedules/1:
+    put:
+      summary: UpdatePiketSchedule
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                day_of_week:
+                  type: integer
+              required:
+                - teacher_user_id
+                - day_of_week
+            example:
+              teacher_user_id: 32
+              day_of_week: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /piket-schedules/2:
+    delete:
+      summary: DeletePiketSchedule
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /teacher-assignments:
+    post:
+      summary: CreateTeacherAssignment
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                class_id:
+                  type: integer
+                subject_id:
+                  type: integer
+                assignment_details:
+                  type: string
+                reason:
+                  type: string
+                due_date:
+                  type: string
+              required:
+                - teacher_user_id
+                - class_id
+                - subject_id
+                - assignment_details
+                - reason
+                - due_date
+            example:
+              teacher_user_id: 33
+              class_id: 35
+              subject_id: 1
+              assignment_details: Kumpulkan tugas halaman 50-55
+              reason: Tugas mingguan
+              due_date: '2025-12-20T10:00:00Z'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: GetAllTeacherAssignment
+      deprecated: false
+      description: ''
+      tags: []
+      parameters:
+        - name: page
+          in: query
+          description: ''
+          required: false
+          example: '1'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ''
+          required: false
+          example: '10'
+          schema:
+            type: string
+        - name: class_id
+          in: query
+          description: ''
+          required: false
+          example: '35'
+          schema:
+            type: string
+        - name: subject_id
+          in: query
+          description: ''
+          required: false
+          example: '3'
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: ''
+          required: true
+          example: '50'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /teacher-assignments/2:
+    put:
+      summary: UpdateTeacherAssignment
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                teacher_user_id:
+                  type: integer
+                class_id:
+                  type: integer
+                subject_id:
+                  type: integer
+                assignment_details:
+                  type: string
+                reason:
+                  type: string
+                due_date:
+                  type: string
+              required:
+                - teacher_user_id
+                - class_id
+                - subject_id
+                - assignment_details
+                - reason
+                - due_date
+            example:
+              teacher_user_id: 32
+              class_id: 61
+              subject_id: 3
+              assignment_details: Edit halaman pengeditan
+              reason: Coba Edit
+              due_date: '2025-12-15T10:00:00Z'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /teacher-assignments/1:
+    delete:
+      summary: DelteTeacherAssignment
+      deprecated: false
+      description: ''
+      tags: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+components:
+  schemas: {}
+  responses:
+    Record not found:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+            required:
+              - code
+              - message
+    Invalid input:
+      description: ''
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+            required:
+              - code
+              - message
+  securitySchemes: {}
+servers: []
+security: []
