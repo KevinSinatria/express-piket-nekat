@@ -19,6 +19,8 @@ tags:
     description: CRUD dan pengelolaan jadwal harian Guru Piket (Admin Only).
   - name: Teacher Assignment
     description: CRUD dan pengelolaan tugas guru (Mapel Only).
+  - name: Reports
+    description: Endpoint untuk laporan data (Admin & Piket).
 paths:
   /auth/login:
     post:
@@ -1009,6 +1011,79 @@ paths:
           description: Tugas guru berhasil dihapus.
         '404':
           $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /reports/student-permits:
+    get:
+      summary: Mendapatkan Laporan Surat Izin Siswa (JSON)
+      description: Mengambil data laporan surat izin siswa berdasarkan rentang tanggal dan status.
+      tags:
+        - Reports
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2025-12-01'
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2025-12-31'
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [PENDING_MAPEL, PENDING_PIKET, APPROVED, REJECTED, CANCELED]
+      responses:
+        '200':
+          description: Laporan berhasil diambil.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+  /reports/student-permits/export:
+    get:
+      summary: Ekspor Laporan Surat Izin Siswa (Excel)
+      description: Mengunduh laporan surat izin siswa dalam format Excel (.xlsx).
+      tags:
+        - Reports
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2025-12-01'
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: '2025-12-31'
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [PENDING_MAPEL, PENDING_PIKET, APPROVED, REJECTED, CANCELED]
+      responses:
+        '200':
+          description: File Excel berhasil diunduh.
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
       security:
         - bearerAuth: []
 components:

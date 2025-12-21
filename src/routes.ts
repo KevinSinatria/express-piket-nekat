@@ -8,6 +8,7 @@ import RolesRoutes from "./modules/roles/role.routes.js";
 import StudentsRoutes from "./modules/students/student.routes.js";
 import PiketScheduleRoutes from "./modules/piket-schedule/piketSchedule.routes.js";
 import TeacherAssignmentRoutes from "./modules/teacher-assignment/teacherAssignment.routes.js";
+import ReportRoutes from "./modules/reports/report.routes.js";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/roles", RolesRoutes);
 router.use("/students", StudentsRoutes);
 router.use("/piket-schedules", PiketScheduleRoutes);
 router.use("/teacher-assignments", TeacherAssignmentRoutes);
+router.use("/reports", ReportRoutes);
 
 export default router;
