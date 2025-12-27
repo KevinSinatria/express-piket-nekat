@@ -11,11 +11,11 @@ export declare const studentPermitService: {
     getAll: (prisma: PrismaClient, query: GetAllQuery) => Promise<{
         data: {
             id: number;
-            student: {
-                nis: string;
+            students: {
                 name: string;
+                nis: string;
                 class: string | null;
-            };
+            }[];
             mapel: {
                 id: number;
                 username: string;
@@ -42,25 +42,37 @@ export declare const studentPermitService: {
             hasNextPage: boolean;
         };
     }>;
-    create: (prisma: PrismaClient, data: CreateData, user_id: number) => Promise<{
+    create: (prisma: PrismaClient, data: CreateData, user_id: number, year_period_id: YearPeriodIdQuery) => Promise<{
         id: number;
-        created_at: Date;
-        updated_at: Date;
-        status: import("../../generated/prisma/enums.js").student_permit_status;
-        piket_user_id: number;
-        mapel_user_id: number;
-        student_nis: string;
-        reason: string;
-        hours_start: number;
-        hours_end: number | null;
-    }>;
-    getById: (prisma: PrismaClient, id: IdParams, year_period_id: YearPeriodIdQuery) => Promise<{
-        id: number;
-        student: {
+        students: {
             name: string;
             nis: string;
             class: string | null;
+        }[];
+        mapel: {
+            id: number;
+            fullname: string;
+            username: string;
         };
+        piket: {
+            id: number;
+            fullname: string;
+            username: string;
+        };
+        status: import("../../generated/prisma/enums.js").student_permit_status;
+        reason: string;
+        hours_start: number;
+        hours_end: number | null;
+        created_at: Date;
+        updated_at: Date;
+    }>;
+    getById: (prisma: PrismaClient, id: IdParams, year_period_id: YearPeriodIdQuery) => Promise<{
+        id: number;
+        students: {
+            name: string;
+            nis: string;
+            class: string | null;
+        }[];
         mapel: {
             id: number;
             fullname: string;
@@ -85,10 +97,10 @@ export declare const studentPermitService: {
         status: import("../../generated/prisma/enums.js").student_permit_status;
         piket_user_id: number;
         mapel_user_id: number;
-        student_nis: string;
         reason: string;
         hours_start: number;
         hours_end: number | null;
+        studentsNis: string | null;
     }>;
     deleteById: (prisma: PrismaClient, id: IdParams) => Promise<{
         id: number;
@@ -97,18 +109,18 @@ export declare const studentPermitService: {
         status: import("../../generated/prisma/enums.js").student_permit_status;
         piket_user_id: number;
         mapel_user_id: number;
-        student_nis: string;
         reason: string;
         hours_start: number;
         hours_end: number | null;
+        studentsNis: string | null;
     }>;
     getMapelPending: (prisma: PrismaClient, user_id: number, year_period_id: YearPeriodIdQuery) => Promise<{
         id: number;
-        student: {
+        students: {
             name: string;
             nis: string;
             class: string | null;
-        };
+        }[];
         mapel: {
             id: number;
             fullname: string;
@@ -128,11 +140,11 @@ export declare const studentPermitService: {
     }[]>;
     getPiketPending: (prisma: PrismaClient, user_id: number, year_period_id: YearPeriodIdQuery) => Promise<{
         id: number;
-        student: {
+        students: {
             name: string;
             nis: string;
             class: string | null;
-        };
+        }[];
         mapel: {
             id: number;
             fullname: string;
@@ -157,11 +169,35 @@ export declare const studentPermitService: {
         status: import("../../generated/prisma/enums.js").student_permit_status;
         piket_user_id: number;
         mapel_user_id: number;
-        student_nis: string;
         reason: string;
         hours_start: number;
         hours_end: number | null;
+        studentsNis: string | null;
     }>;
+    getAllNewApproved: (prisma: PrismaClient, year_period_id: number) => Promise<{
+        id: number;
+        students: {
+            name: string;
+            nis: string;
+            class: string | null;
+        }[];
+        mapel: {
+            id: number;
+            fullname: string;
+            username: string;
+        };
+        piket: {
+            id: number;
+            fullname: string;
+            username: string;
+        };
+        status: import("../../generated/prisma/enums.js").student_permit_status;
+        reason: string;
+        hours_start: number;
+        hours_end: number | null;
+        created_at: Date;
+        updated_at: Date;
+    }[]>;
 };
 export {};
 //# sourceMappingURL=student-permit.service.d.ts.map

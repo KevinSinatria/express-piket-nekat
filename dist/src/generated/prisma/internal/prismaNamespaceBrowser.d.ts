@@ -46,6 +46,7 @@ export declare const ModelName: {
     readonly PiketSchedule: "PiketSchedule";
     readonly teacher_assignments: "teacher_assignments";
     readonly student_permits: "student_permits";
+    readonly student_permit_details: "student_permit_details";
     readonly year_period: "year_period";
     readonly roles: "roles";
     readonly user_role: "user_role";
@@ -229,11 +230,17 @@ export declare const Student_permitsScalarFieldEnum: {
     readonly status: "status";
     readonly created_at: "created_at";
     readonly updated_at: "updated_at";
-    readonly student_nis: "student_nis";
     readonly piket_user_id: "piket_user_id";
     readonly mapel_user_id: "mapel_user_id";
+    readonly studentsNis: "studentsNis";
 };
 export type Student_permitsScalarFieldEnum = (typeof Student_permitsScalarFieldEnum)[keyof typeof Student_permitsScalarFieldEnum];
+export declare const Student_permit_detailsScalarFieldEnum: {
+    readonly id: "id";
+    readonly student_permit_id: "student_permit_id";
+    readonly student_nis: "student_nis";
+};
+export type Student_permit_detailsScalarFieldEnum = (typeof Student_permit_detailsScalarFieldEnum)[keyof typeof Student_permit_detailsScalarFieldEnum];
 export declare const Year_periodScalarFieldEnum: {
     readonly id: "id";
     readonly start_year: "start_year";

@@ -120,6 +120,11 @@ export type teacher_assignments = Prisma.teacher_assignmentsModel;
  */
 export type student_permits = Prisma.student_permitsModel;
 /**
+ * Model student_permit_details
+ *
+ */
+export type student_permit_details = Prisma.student_permit_detailsModel;
+/**
  * Model year_period
  *
  */

@@ -4,11 +4,11 @@ import { createPiketScheduleSchema, getPiketSchedulesSchema, updatePiketSchedule
 import { createPiketScheduleController, deletePiketScheduleController, getAllPiketSchedulesController, getPiketScheduleByIdController, updatePiketScheduleController, } from "./piketSchedule.controller.js";
 import { authMiddleware, roleCheckMiddleware, } from "../../middlewares/auth.middleware.js";
 const router = Router();
-router.use(authMiddleware, roleCheckMiddleware(["ADMIN"]));
-router.post("/", validate(createPiketScheduleSchema), createPiketScheduleController);
-router.get("/", validate(getPiketSchedulesSchema), getAllPiketSchedulesController);
-router.get("/:id", validate(piketScheduleIdSchema), getPiketScheduleByIdController);
-router.put("/:id", validate(updatePiketScheduleSchema), updatePiketScheduleController);
-router.delete("/:id", validate(piketScheduleIdSchema), deletePiketScheduleController);
+router.use(authMiddleware);
+router.post("/", roleCheckMiddleware(["ADMIN"]), validate(createPiketScheduleSchema), createPiketScheduleController);
+router.get("/", roleCheckMiddleware(["ADMIN", "PIKET"]), validate(getPiketSchedulesSchema), getAllPiketSchedulesController);
+router.get("/:id", roleCheckMiddleware(["ADMIN", "PIKET"]), validate(piketScheduleIdSchema), getPiketScheduleByIdController);
+router.put("/:id", roleCheckMiddleware(["ADMIN"]), validate(updatePiketScheduleSchema), updatePiketScheduleController);
+router.delete("/:id", roleCheckMiddleware(["ADMIN"]), validate(piketScheduleIdSchema), deletePiketScheduleController);
 export default router;
 //# sourceMappingURL=piketSchedule.routes.js.map

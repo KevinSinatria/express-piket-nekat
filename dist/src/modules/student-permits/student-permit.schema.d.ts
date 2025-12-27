@@ -2,7 +2,7 @@ import z from "zod";
 export declare const studentPermitSchema: {
     createSchema: z.ZodObject<{
         body: z.ZodObject<{
-            student_nis: z.ZodString;
+            student_nis: z.ZodArray<z.ZodString>;
             reason: z.ZodString;
             hours_start: z.ZodNumber;
             hours_end: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
@@ -14,7 +14,7 @@ export declare const studentPermitSchema: {
             id: z.z.ZodCoercedNumber<unknown>;
         }, z.z.core.$strip>;
         body: z.ZodObject<{
-            student_nis: z.ZodOptional<z.ZodString>;
+            student_nis: z.ZodArray<z.ZodString>;
             reason: z.ZodOptional<z.ZodString>;
             hours_start: z.ZodOptional<z.ZodNumber>;
             hours_end: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;

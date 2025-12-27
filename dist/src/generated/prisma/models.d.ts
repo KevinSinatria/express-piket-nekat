@@ -18,6 +18,7 @@ export type * from './models/subjects.js';
 export type * from './models/PiketSchedule.js';
 export type * from './models/teacher_assignments.js';
 export type * from './models/student_permits.js';
+export type * from './models/student_permit_details.js';
 export type * from './models/year_period.js';
 export type * from './models/roles.js';
 export type * from './models/user_role.js';

@@ -16,6 +16,7 @@ export declare const studentPermitController: {
     deleteById: (req: DeleteByIdRequest, res: Response, next: NextFunction) => Promise<void>;
     getMapelPending: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     getPiketPending: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getAllNewApproved: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 };
 export {};
 //# sourceMappingURL=student-permit.controller.d.ts.map

@@ -251,6 +251,7 @@ export declare const ModelName: {
     readonly PiketSchedule: "PiketSchedule";
     readonly teacher_assignments: "teacher_assignments";
     readonly student_permits: "student_permits";
+    readonly student_permit_details: "student_permit_details";
     readonly year_period: "year_period";
     readonly roles: "roles";
     readonly user_role: "user_role";
@@ -266,7 +267,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "cache" | "cache_locks" | "failed_jobs" | "job_batches" | "jobs" | "password_reset_tokens" | "personal_access_tokens" | "sessions" | "classes" | "detail_students" | "students" | "users" | "violation_categories" | "violation_category" | "violation_type" | "violations" | "subjects" | "piketSchedule" | "teacher_assignments" | "student_permits" | "year_period" | "roles" | "user_role";
+        modelProps: "cache" | "cache_locks" | "failed_jobs" | "job_batches" | "jobs" | "password_reset_tokens" | "personal_access_tokens" | "sessions" | "classes" | "detail_students" | "students" | "users" | "violation_categories" | "violation_category" | "violation_type" | "violations" | "subjects" | "piketSchedule" | "teacher_assignments" | "student_permits" | "student_permit_details" | "year_period" | "roles" | "user_role";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1750,6 +1751,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        student_permit_details: {
+            payload: Prisma.$student_permit_detailsPayload<ExtArgs>;
+            fields: Prisma.student_permit_detailsFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.student_permit_detailsFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.student_permit_detailsFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                findFirst: {
+                    args: Prisma.student_permit_detailsFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.student_permit_detailsFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                findMany: {
+                    args: Prisma.student_permit_detailsFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>[];
+                };
+                create: {
+                    args: Prisma.student_permit_detailsCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                createMany: {
+                    args: Prisma.student_permit_detailsCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.student_permit_detailsCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>[];
+                };
+                delete: {
+                    args: Prisma.student_permit_detailsDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                update: {
+                    args: Prisma.student_permit_detailsUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.student_permit_detailsDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.student_permit_detailsUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.student_permit_detailsUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>[];
+                };
+                upsert: {
+                    args: Prisma.student_permit_detailsUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$student_permit_detailsPayload>;
+                };
+                aggregate: {
+                    args: Prisma.Student_permit_detailsAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateStudent_permit_details>;
+                };
+                groupBy: {
+                    args: Prisma.student_permit_detailsGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.Student_permit_detailsGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.student_permit_detailsCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.Student_permit_detailsCountAggregateOutputType> | number;
+                };
+            };
+        };
         year_period: {
             payload: Prisma.$year_periodPayload<ExtArgs>;
             fields: Prisma.year_periodFieldRefs;
@@ -2177,11 +2252,17 @@ export declare const Student_permitsScalarFieldEnum: {
     readonly status: "status";
     readonly created_at: "created_at";
     readonly updated_at: "updated_at";
-    readonly student_nis: "student_nis";
     readonly piket_user_id: "piket_user_id";
     readonly mapel_user_id: "mapel_user_id";
+    readonly studentsNis: "studentsNis";
 };
 export type Student_permitsScalarFieldEnum = (typeof Student_permitsScalarFieldEnum)[keyof typeof Student_permitsScalarFieldEnum];
+export declare const Student_permit_detailsScalarFieldEnum: {
+    readonly id: "id";
+    readonly student_permit_id: "student_permit_id";
+    readonly student_nis: "student_nis";
+};
+export type Student_permit_detailsScalarFieldEnum = (typeof Student_permit_detailsScalarFieldEnum)[keyof typeof Student_permit_detailsScalarFieldEnum];
 export declare const Year_periodScalarFieldEnum: {
     readonly id: "id";
     readonly start_year: "start_year";
@@ -2376,6 +2457,7 @@ export type GlobalOmitConfig = {
     piketSchedule?: Prisma.PiketScheduleOmit;
     teacher_assignments?: Prisma.teacher_assignmentsOmit;
     student_permits?: Prisma.student_permitsOmit;
+    student_permit_details?: Prisma.student_permit_detailsOmit;
     year_period?: Prisma.year_periodOmit;
     roles?: Prisma.rolesOmit;
     user_role?: Prisma.user_roleOmit;

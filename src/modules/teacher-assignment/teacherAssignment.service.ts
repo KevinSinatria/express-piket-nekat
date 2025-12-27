@@ -48,7 +48,6 @@ export const createTeacherAssignmentService = async (
       teacher: { select: { id: true, username: true, fullname: true } },
       class: { select: { id: true, class: true } },
       subject: { select: { id: true, name: true } },
-      users: { select: { id: true, username: true, fullname: true } },
     },
   });
 

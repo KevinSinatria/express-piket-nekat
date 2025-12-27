@@ -59,7 +59,13 @@ const create = async (
 ) => {
   try {
     const { id } = req.user!;
-    const result = await studentPermitService.create(prisma, req.body, id);
+    const { year_period_id } = req.query;
+    const result = await studentPermitService.create(
+      prisma,
+      req.body,
+      id,
+      Number(year_period_id)
+    );
     res.status(201).json({
       success: true,
       message: "Student permit created successfully",
@@ -213,6 +219,27 @@ const getPiketPending = async (
   }
 };
 
+const getAllNewApproved = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { year_period_id } = req.query;
+    const result = await studentPermitService.getAllNewApproved(
+      prisma,
+      Number(year_period_id)
+    );
+    res.status(200).json({
+      success: true,
+      message: "Student permit fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const studentPermitController = {
   getAll,
   create,
@@ -222,4 +249,5 @@ export const studentPermitController = {
   deleteById,
   getMapelPending,
   getPiketPending,
+  getAllNewApproved,
 };
