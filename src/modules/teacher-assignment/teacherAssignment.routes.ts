@@ -14,7 +14,10 @@ import {
   getTeacherAssignmentByIdController,
   updateTeacherAssignmentController,
 } from "./teacherAssignment.controller.js";
-import { authMiddleware, roleCheckMiddleware } from "../../middlewares/auth.middleware.js";
+import {
+  authMiddleware,
+  roleCheckMiddleware,
+} from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -36,8 +39,23 @@ router.get(
 
 const mapelAndAdminOnly = roleCheckMiddleware(["mapel", "admin"]);
 
-router.post("/", mapelAndAdminOnly, validate(createTeacherAssignmentSchema), createTeacherAssignmentController);
-router.put("/:id", mapelAndAdminOnly, validate(updateTeacherAssignmentSchema), updateTeacherAssignmentController);
-router.delete("/:id", mapelAndAdminOnly, validate(teacherAssignmentIdSchema), deleteTeacherAssignmentController);
+router.post(
+  "/",
+  mapelAndAdminOnly,
+  validate(createTeacherAssignmentSchema),
+  createTeacherAssignmentController
+);
+router.put(
+  "/:id",
+  mapelAndAdminOnly,
+  validate(updateTeacherAssignmentSchema),
+  updateTeacherAssignmentController
+);
+router.delete(
+  "/:id",
+  mapelAndAdminOnly,
+  validate(teacherAssignmentIdSchema),
+  deleteTeacherAssignmentController
+);
 
 export default router;

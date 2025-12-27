@@ -59,6 +59,7 @@ export const ModelName = {
     PiketSchedule: 'PiketSchedule',
     teacher_assignments: 'teacher_assignments',
     student_permits: 'student_permits',
+    student_permit_details: 'student_permit_details',
     year_period: 'year_period',
     roles: 'roles',
     user_role: 'user_role'
@@ -224,9 +225,14 @@ export const Student_permitsScalarFieldEnum = {
     status: 'status',
     created_at: 'created_at',
     updated_at: 'updated_at',
-    student_nis: 'student_nis',
     piket_user_id: 'piket_user_id',
-    mapel_user_id: 'mapel_user_id'
+    mapel_user_id: 'mapel_user_id',
+    studentsNis: 'studentsNis'
+};
+export const Student_permit_detailsScalarFieldEnum = {
+    id: 'id',
+    student_permit_id: 'student_permit_id',
+    student_nis: 'student_nis'
 };
 export const Year_periodScalarFieldEnum = {
     id: 'id',

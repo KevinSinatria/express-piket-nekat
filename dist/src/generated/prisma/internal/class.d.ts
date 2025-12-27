@@ -332,6 +332,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.student_permit_details`: Exposes CRUD operations for the **student_permit_details** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Student_permit_details
+      * const student_permit_details = await prisma.student_permit_details.findMany()
+      * ```
+      */
+    get student_permit_details(): Prisma.student_permit_detailsDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.year_period`: Exposes CRUD operations for the **year_period** model.
       * Example usage:
       * ```ts

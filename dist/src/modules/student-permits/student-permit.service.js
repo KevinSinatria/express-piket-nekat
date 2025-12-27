@@ -12,12 +12,16 @@ const getAll = async (prisma, query) => {
     const date_end = query.date_end;
     const filters = [
         {
-            student: {
-                detail_students: {
-                    some: {
-                        ...(query.year_period_id && {
-                            id_year_period: Number(query.year_period_id),
-                        }),
+            student_permit_details: {
+                some: {
+                    student: {
+                        detail_students: {
+                            some: {
+                                ...(query.year_period_id && {
+                                    id_year_period: Number(query.year_period_id),
+                                }),
+                            },
+                        },
                     },
                 },
             },
@@ -26,8 +30,26 @@ const getAll = async (prisma, query) => {
     if (search) {
         filters.push({
             OR: [
-                { student: { name: { contains: search, mode: "insensitive" } } },
-                { student: { nis: { contains: search, mode: "insensitive" } } },
+                {
+                    student_permit_details: {
+                        some: {
+                            student_nis: {
+                                contains: search,
+                            },
+                        },
+                    },
+                },
+                {
+                    student_permit_details: {
+                        some: {
+                            student: {
+                                name: {
+                                    contains: search,
+                                },
+                            },
+                        },
+                    },
+                },
                 { mapel_user: { fullname: { contains: search, mode: "insensitive" } } },
                 { mapel_user: { username: { contains: search, mode: "insensitive" } } },
                 { piket_user: { fullname: { contains: search, mode: "insensitive" } } },
@@ -64,20 +86,24 @@ const getAll = async (prisma, query) => {
             take: limit || 10,
             orderBy: { created_at: "desc" },
             include: {
-                student: {
-                    select: {
-                        name: true,
-                        nis: true,
-                        detail_students: {
-                            where: {
-                                ...(query.year_period_id && {
-                                    id_year_period: Number(query.year_period_id),
-                                }),
-                            },
+                student_permit_details: {
+                    include: {
+                        student: {
                             select: {
-                                classes: {
+                                name: true,
+                                nis: true,
+                                detail_students: {
+                                    where: {
+                                        ...(query.year_period_id && {
+                                            id_year_period: Number(query.year_period_id),
+                                        }),
+                                    },
                                     select: {
-                                        class: true,
+                                        classes: {
+                                            select: {
+                                                class: true,
+                                            },
+                                        },
                                     },
                                 },
                             },
@@ -92,11 +118,11 @@ const getAll = async (prisma, query) => {
     const formattedData = studentPermits.map((studentPermit) => {
         return {
             id: studentPermit.id,
-            student: {
-                nis: studentPermit.student.nis,
-                name: studentPermit.student.name,
-                class: studentPermit.student.detail_students[0]?.classes.class ?? null,
-            },
+            students: studentPermit.student_permit_details.map((detail) => ({
+                name: detail.student.name,
+                nis: detail.student.nis,
+                class: detail.student.detail_students[0]?.classes.class ?? null,
+            })),
             mapel: {
                 id: studentPermit.mapel_user_id,
                 username: studentPermit.mapel_user.username,
@@ -121,38 +147,40 @@ const getAll = async (prisma, query) => {
         meta,
     };
 };
-const create = async (prisma, data, user_id) => {
+const create = async (prisma, data, user_id, year_period_id) => {
     const studentPermit = await prisma.student_permits.create({
         data: {
-            student_nis: data.student_nis,
             mapel_user_id: data.mapel_user_id,
             piket_user_id: user_id,
             status: "PENDING_MAPEL",
             reason: data.reason,
             hours_start: data.hours_start,
             hours_end: data.hours_end ?? null,
-        },
-    });
-    return studentPermit;
-};
-const getById = async (prisma, id, year_period_id) => {
-    const studentPermit = await prisma.student_permits.findUniqueOrThrow({
-        where: {
-            id: parseInt(String(id)),
+            student_permit_details: {
+                createMany: {
+                    data: data.student_nis.map((nis) => ({
+                        student_nis: nis,
+                    })),
+                },
+            },
         },
         include: {
-            student: {
-                select: {
-                    name: true,
-                    nis: true,
-                    detail_students: {
-                        where: {
-                            ...(year_period_id && { id_year_period: year_period_id }),
-                        },
+            student_permit_details: {
+                include: {
+                    student: {
                         select: {
-                            classes: {
+                            name: true,
+                            nis: true,
+                            detail_students: {
+                                where: {
+                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                },
                                 select: {
-                                    class: true,
+                                    classes: {
+                                        select: {
+                                            class: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -175,11 +203,79 @@ const getById = async (prisma, id, year_period_id) => {
     });
     const formattedStudentPermit = {
         id: studentPermit.id,
-        student: {
-            name: studentPermit.student.name,
-            nis: studentPermit.student.nis,
-            class: studentPermit.student.detail_students[0]?.classes.class ?? null,
+        students: studentPermit.student_permit_details.map((detail) => ({
+            name: detail.student.name,
+            nis: detail.student.nis,
+            class: detail.student.detail_students[0]?.classes.class ?? null,
+        })),
+        mapel: {
+            id: studentPermit.mapel_user_id,
+            fullname: studentPermit.mapel_user.fullname,
+            username: studentPermit.mapel_user.username,
         },
+        piket: {
+            id: studentPermit.piket_user_id,
+            fullname: studentPermit.piket_user.fullname,
+            username: studentPermit.piket_user.username,
+        },
+        status: studentPermit.status,
+        reason: studentPermit.reason,
+        hours_start: studentPermit.hours_start,
+        hours_end: studentPermit.hours_end,
+        created_at: studentPermit.created_at,
+        updated_at: studentPermit.updated_at,
+    };
+    return formattedStudentPermit;
+};
+const getById = async (prisma, id, year_period_id) => {
+    const studentPermit = await prisma.student_permits.findUniqueOrThrow({
+        where: {
+            id: parseInt(String(id)),
+        },
+        include: {
+            student_permit_details: {
+                include: {
+                    student: {
+                        select: {
+                            name: true,
+                            nis: true,
+                            detail_students: {
+                                where: {
+                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                },
+                                select: {
+                                    classes: {
+                                        select: {
+                                            class: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            mapel_user: {
+                select: {
+                    fullname: true,
+                    username: true,
+                },
+            },
+            piket_user: {
+                select: {
+                    fullname: true,
+                    username: true,
+                },
+            },
+        },
+    });
+    const formattedStudentPermit = {
+        id: studentPermit.id,
+        students: studentPermit.student_permit_details.map((detail) => ({
+            name: detail.student.name,
+            nis: detail.student.nis,
+            class: detail.student.detail_students[0]?.classes.class ?? null,
+        })),
         mapel: {
             id: studentPermit.mapel_user_id,
             fullname: studentPermit.mapel_user.fullname,
@@ -205,12 +301,22 @@ const update = async (prisma, id, data) => {
             id: parseInt(String(id)),
         },
         data: {
-            ...(data.student_nis && { student_nis: data.student_nis }),
             ...(data.mapel_user_id && { mapel_user_id: data.mapel_user_id }),
             ...(data.reason && { reason: data.reason }),
             ...(data.hours_start && { hours_start: data.hours_start }),
             ...(data.hours_end && { hours_end: data.hours_end }),
         },
+    });
+    await prisma.student_permit_details.deleteMany({
+        where: {
+            student_permit_id: Number(id),
+        },
+    });
+    await prisma.student_permit_details.createMany({
+        data: data.student_nis.map((nis) => ({
+            student_permit_id: Number(id),
+            student_nis: nis,
+        })),
     });
     return studentPermit;
 };
@@ -241,18 +347,22 @@ const getMapelPending = async (prisma, user_id, year_period_id) => {
             created_at: "desc",
         },
         include: {
-            student: {
-                select: {
-                    name: true,
-                    nis: true,
-                    detail_students: {
-                        where: {
-                            ...(year_period_id && { id_year_period: year_period_id }),
-                        },
+            student_permit_details: {
+                include: {
+                    student: {
                         select: {
-                            classes: {
+                            name: true,
+                            nis: true,
+                            detail_students: {
+                                where: {
+                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                },
                                 select: {
-                                    class: true,
+                                    classes: {
+                                        select: {
+                                            class: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -275,11 +385,11 @@ const getMapelPending = async (prisma, user_id, year_period_id) => {
     });
     const formattedData = mapelPendingStudentPermits.map((studentPermit) => ({
         id: studentPermit.id,
-        student: {
-            name: studentPermit.student.name,
-            nis: studentPermit.student.nis,
-            class: studentPermit.student.detail_students[0]?.classes.class ?? null,
-        },
+        students: studentPermit.student_permit_details.map((detail) => ({
+            name: detail.student.name,
+            nis: detail.student.nis,
+            class: detail.student.detail_students[0]?.classes.class ?? null,
+        })),
         mapel: {
             id: studentPermit.mapel_user_id,
             fullname: studentPermit.mapel_user.fullname,
@@ -310,18 +420,22 @@ const getPiketPending = async (prisma, user_id, year_period_id) => {
             created_at: "desc",
         },
         include: {
-            student: {
-                select: {
-                    name: true,
-                    nis: true,
-                    detail_students: {
-                        where: {
-                            ...(year_period_id && { id_year_period: year_period_id }),
-                        },
+            student_permit_details: {
+                include: {
+                    student: {
                         select: {
-                            classes: {
+                            name: true,
+                            nis: true,
+                            detail_students: {
+                                where: {
+                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                },
                                 select: {
-                                    class: true,
+                                    classes: {
+                                        select: {
+                                            class: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -344,11 +458,11 @@ const getPiketPending = async (prisma, user_id, year_period_id) => {
     });
     const formattedData = piketPendingStudentPermits.map((studentPermit) => ({
         id: studentPermit.id,
-        student: {
-            name: studentPermit.student.name,
-            nis: studentPermit.student.nis,
-            class: studentPermit.student.detail_students[0]?.classes.class ?? null,
-        },
+        students: studentPermit.student_permit_details.map((detail) => ({
+            name: detail.student.name,
+            nis: detail.student.nis,
+            class: detail.student.detail_students[0]?.classes.class ?? null,
+        })),
         mapel: {
             id: studentPermit.mapel_user_id,
             fullname: studentPermit.mapel_user.fullname,
@@ -378,6 +492,81 @@ const process = async (prisma, id, data) => {
         },
     });
 };
+const getAllNewApproved = async (prisma, year_period_id) => {
+    const studentPermits = await prisma.student_permits.findMany({
+        where: {
+            status: "APPROVED",
+            created_at: {
+                gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+                lte: new Date(new Date().setDate(new Date().getDate() + 1)),
+            },
+        },
+        orderBy: {
+            created_at: "desc",
+        },
+        include: {
+            student_permit_details: {
+                include: {
+                    student: {
+                        select: {
+                            name: true,
+                            nis: true,
+                            detail_students: {
+                                where: {
+                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                },
+                                select: {
+                                    classes: {
+                                        select: {
+                                            class: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            mapel_user: {
+                select: {
+                    fullname: true,
+                    username: true,
+                },
+            },
+            piket_user: {
+                select: {
+                    fullname: true,
+                    username: true,
+                },
+            },
+        },
+    });
+    const formattedData = studentPermits.map((studentPermit) => ({
+        id: studentPermit.id,
+        students: studentPermit.student_permit_details.map((detail) => ({
+            name: detail.student.name,
+            nis: detail.student.nis,
+            class: detail.student.detail_students[0]?.classes.class ?? null,
+        })),
+        mapel: {
+            id: studentPermit.mapel_user_id,
+            fullname: studentPermit.mapel_user.fullname,
+            username: studentPermit.mapel_user.username,
+        },
+        piket: {
+            id: studentPermit.piket_user_id,
+            fullname: studentPermit.piket_user.fullname,
+            username: studentPermit.piket_user.username,
+        },
+        status: studentPermit.status,
+        reason: studentPermit.reason,
+        hours_start: studentPermit.hours_start,
+        hours_end: studentPermit.hours_end,
+        created_at: studentPermit.created_at,
+        updated_at: studentPermit.updated_at,
+    }));
+    return formattedData;
+};
 export const studentPermitService = {
     getAll,
     create,
@@ -387,5 +576,6 @@ export const studentPermitService = {
     getMapelPending,
     getPiketPending,
     process,
+    getAllNewApproved,
 };
 //# sourceMappingURL=student-permit.service.js.map

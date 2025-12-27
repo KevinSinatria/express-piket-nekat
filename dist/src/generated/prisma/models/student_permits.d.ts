@@ -35,9 +35,9 @@ export type Student_permitsMinAggregateOutputType = {
     status: $Enums.student_permit_status | null;
     created_at: Date | null;
     updated_at: Date | null;
-    student_nis: string | null;
     piket_user_id: number | null;
     mapel_user_id: number | null;
+    studentsNis: string | null;
 };
 export type Student_permitsMaxAggregateOutputType = {
     id: number | null;
@@ -47,9 +47,9 @@ export type Student_permitsMaxAggregateOutputType = {
     status: $Enums.student_permit_status | null;
     created_at: Date | null;
     updated_at: Date | null;
-    student_nis: string | null;
     piket_user_id: number | null;
     mapel_user_id: number | null;
+    studentsNis: string | null;
 };
 export type Student_permitsCountAggregateOutputType = {
     id: number;
@@ -59,9 +59,9 @@ export type Student_permitsCountAggregateOutputType = {
     status: number;
     created_at: number;
     updated_at: number;
-    student_nis: number;
     piket_user_id: number;
     mapel_user_id: number;
+    studentsNis: number;
     _all: number;
 };
 export type Student_permitsAvgAggregateInputType = {
@@ -86,9 +86,9 @@ export type Student_permitsMinAggregateInputType = {
     status?: true;
     created_at?: true;
     updated_at?: true;
-    student_nis?: true;
     piket_user_id?: true;
     mapel_user_id?: true;
+    studentsNis?: true;
 };
 export type Student_permitsMaxAggregateInputType = {
     id?: true;
@@ -98,9 +98,9 @@ export type Student_permitsMaxAggregateInputType = {
     status?: true;
     created_at?: true;
     updated_at?: true;
-    student_nis?: true;
     piket_user_id?: true;
     mapel_user_id?: true;
+    studentsNis?: true;
 };
 export type Student_permitsCountAggregateInputType = {
     id?: true;
@@ -110,9 +110,9 @@ export type Student_permitsCountAggregateInputType = {
     status?: true;
     created_at?: true;
     updated_at?: true;
-    student_nis?: true;
     piket_user_id?: true;
     mapel_user_id?: true;
+    studentsNis?: true;
     _all?: true;
 };
 export type Student_permitsAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -199,9 +199,9 @@ export type Student_permitsGroupByOutputType = {
     status: $Enums.student_permit_status;
     created_at: Date;
     updated_at: Date;
-    student_nis: string;
     piket_user_id: number;
     mapel_user_id: number;
+    studentsNis: string | null;
     _count: Student_permitsCountAggregateOutputType | null;
     _avg: Student_permitsAvgAggregateOutputType | null;
     _sum: Student_permitsSumAggregateOutputType | null;
@@ -222,12 +222,13 @@ export type student_permitsWhereInput = {
     status?: Prisma.Enumstudent_permit_statusFilter<"student_permits"> | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
     updated_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
-    student_nis?: Prisma.StringFilter<"student_permits"> | string;
     piket_user_id?: Prisma.IntFilter<"student_permits"> | number;
     mapel_user_id?: Prisma.IntFilter<"student_permits"> | number;
+    studentsNis?: Prisma.StringNullableFilter<"student_permits"> | string | null;
+    student_permit_details?: Prisma.Student_permit_detailsListRelationFilter;
     mapel_user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>;
     piket_user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>;
-    student?: Prisma.XOR<Prisma.StudentsScalarRelationFilter, Prisma.studentsWhereInput>;
+    students?: Prisma.XOR<Prisma.StudentsNullableScalarRelationFilter, Prisma.studentsWhereInput> | null;
 };
 export type student_permitsOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -237,12 +238,13 @@ export type student_permitsOrderByWithRelationInput = {
     status?: Prisma.SortOrder;
     created_at?: Prisma.SortOrder;
     updated_at?: Prisma.SortOrder;
-    student_nis?: Prisma.SortOrder;
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
+    studentsNis?: Prisma.SortOrderInput | Prisma.SortOrder;
+    student_permit_details?: Prisma.student_permit_detailsOrderByRelationAggregateInput;
     mapel_user?: Prisma.usersOrderByWithRelationInput;
     piket_user?: Prisma.usersOrderByWithRelationInput;
-    student?: Prisma.studentsOrderByWithRelationInput;
+    students?: Prisma.studentsOrderByWithRelationInput;
 };
 export type student_permitsWhereUniqueInput = Prisma.AtLeast<{
     id?: number;
@@ -255,12 +257,13 @@ export type student_permitsWhereUniqueInput = Prisma.AtLeast<{
     status?: Prisma.Enumstudent_permit_statusFilter<"student_permits"> | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
     updated_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
-    student_nis?: Prisma.StringFilter<"student_permits"> | string;
     piket_user_id?: Prisma.IntFilter<"student_permits"> | number;
     mapel_user_id?: Prisma.IntFilter<"student_permits"> | number;
+    studentsNis?: Prisma.StringNullableFilter<"student_permits"> | string | null;
+    student_permit_details?: Prisma.Student_permit_detailsListRelationFilter;
     mapel_user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>;
     piket_user?: Prisma.XOR<Prisma.UsersScalarRelationFilter, Prisma.usersWhereInput>;
-    student?: Prisma.XOR<Prisma.StudentsScalarRelationFilter, Prisma.studentsWhereInput>;
+    students?: Prisma.XOR<Prisma.StudentsNullableScalarRelationFilter, Prisma.studentsWhereInput> | null;
 }, "id">;
 export type student_permitsOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -270,9 +273,9 @@ export type student_permitsOrderByWithAggregationInput = {
     status?: Prisma.SortOrder;
     created_at?: Prisma.SortOrder;
     updated_at?: Prisma.SortOrder;
-    student_nis?: Prisma.SortOrder;
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
+    studentsNis?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.student_permitsCountOrderByAggregateInput;
     _avg?: Prisma.student_permitsAvgOrderByAggregateInput;
     _max?: Prisma.student_permitsMaxOrderByAggregateInput;
@@ -290,9 +293,9 @@ export type student_permitsScalarWhereWithAggregatesInput = {
     status?: Prisma.Enumstudent_permit_statusWithAggregatesFilter<"student_permits"> | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeWithAggregatesFilter<"student_permits"> | Date | string;
     updated_at?: Prisma.DateTimeWithAggregatesFilter<"student_permits"> | Date | string;
-    student_nis?: Prisma.StringWithAggregatesFilter<"student_permits"> | string;
     piket_user_id?: Prisma.IntWithAggregatesFilter<"student_permits"> | number;
     mapel_user_id?: Prisma.IntWithAggregatesFilter<"student_permits"> | number;
+    studentsNis?: Prisma.StringNullableWithAggregatesFilter<"student_permits"> | string | null;
 };
 export type student_permitsCreateInput = {
     reason: string;
@@ -301,9 +304,10 @@ export type student_permitsCreateInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
+    student_permit_details?: Prisma.student_permit_detailsCreateNestedManyWithoutStudent_permitInput;
     mapel_user: Prisma.usersCreateNestedOneWithoutMapel_permits_approvalInput;
     piket_user: Prisma.usersCreateNestedOneWithoutPiket_permits_createdInput;
-    student: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
+    students?: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
 };
 export type student_permitsUncheckedCreateInput = {
     id?: number;
@@ -313,9 +317,10 @@ export type student_permitsUncheckedCreateInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     piket_user_id: number;
     mapel_user_id: number;
+    studentsNis?: string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedCreateNestedManyWithoutStudent_permitInput;
 };
 export type student_permitsUpdateInput = {
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -324,9 +329,10 @@ export type student_permitsUpdateInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    student_permit_details?: Prisma.student_permit_detailsUpdateManyWithoutStudent_permitNestedInput;
     mapel_user?: Prisma.usersUpdateOneRequiredWithoutMapel_permits_approvalNestedInput;
     piket_user?: Prisma.usersUpdateOneRequiredWithoutPiket_permits_createdNestedInput;
-    student?: Prisma.studentsUpdateOneRequiredWithoutStudentPermitsNestedInput;
+    students?: Prisma.studentsUpdateOneWithoutStudentPermitsNestedInput;
 };
 export type student_permitsUncheckedUpdateInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -336,9 +342,10 @@ export type student_permitsUncheckedUpdateInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
     mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedUpdateManyWithoutStudent_permitNestedInput;
 };
 export type student_permitsCreateManyInput = {
     id?: number;
@@ -348,9 +355,9 @@ export type student_permitsCreateManyInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     piket_user_id: number;
     mapel_user_id: number;
+    studentsNis?: string | null;
 };
 export type student_permitsUpdateManyMutationInput = {
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -368,9 +375,9 @@ export type student_permitsUncheckedUpdateManyInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
     mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type Student_permitsListRelationFilter = {
     every?: Prisma.student_permitsWhereInput;
@@ -388,9 +395,9 @@ export type student_permitsCountOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     created_at?: Prisma.SortOrder;
     updated_at?: Prisma.SortOrder;
-    student_nis?: Prisma.SortOrder;
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
+    studentsNis?: Prisma.SortOrder;
 };
 export type student_permitsAvgOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -407,9 +414,9 @@ export type student_permitsMaxOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     created_at?: Prisma.SortOrder;
     updated_at?: Prisma.SortOrder;
-    student_nis?: Prisma.SortOrder;
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
+    studentsNis?: Prisma.SortOrder;
 };
 export type student_permitsMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -419,9 +426,9 @@ export type student_permitsMinOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     created_at?: Prisma.SortOrder;
     updated_at?: Prisma.SortOrder;
-    student_nis?: Prisma.SortOrder;
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
+    studentsNis?: Prisma.SortOrder;
 };
 export type student_permitsSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -430,42 +437,46 @@ export type student_permitsSumOrderByAggregateInput = {
     piket_user_id?: Prisma.SortOrder;
     mapel_user_id?: Prisma.SortOrder;
 };
-export type student_permitsCreateNestedManyWithoutStudentInput = {
-    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput> | Prisma.student_permitsCreateWithoutStudentInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentInput[];
-    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentInput | Prisma.student_permitsCreateOrConnectWithoutStudentInput[];
-    createMany?: Prisma.student_permitsCreateManyStudentInputEnvelope;
+export type Student_permitsScalarRelationFilter = {
+    is?: Prisma.student_permitsWhereInput;
+    isNot?: Prisma.student_permitsWhereInput;
+};
+export type student_permitsCreateNestedManyWithoutStudentsInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput> | Prisma.student_permitsCreateWithoutStudentsInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentsInput[];
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentsInput | Prisma.student_permitsCreateOrConnectWithoutStudentsInput[];
+    createMany?: Prisma.student_permitsCreateManyStudentsInputEnvelope;
     connect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
 };
-export type student_permitsUncheckedCreateNestedManyWithoutStudentInput = {
-    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput> | Prisma.student_permitsCreateWithoutStudentInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentInput[];
-    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentInput | Prisma.student_permitsCreateOrConnectWithoutStudentInput[];
-    createMany?: Prisma.student_permitsCreateManyStudentInputEnvelope;
+export type student_permitsUncheckedCreateNestedManyWithoutStudentsInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput> | Prisma.student_permitsCreateWithoutStudentsInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentsInput[];
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentsInput | Prisma.student_permitsCreateOrConnectWithoutStudentsInput[];
+    createMany?: Prisma.student_permitsCreateManyStudentsInputEnvelope;
     connect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
 };
-export type student_permitsUpdateManyWithoutStudentNestedInput = {
-    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput> | Prisma.student_permitsCreateWithoutStudentInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentInput[];
-    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentInput | Prisma.student_permitsCreateOrConnectWithoutStudentInput[];
-    upsert?: Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentInput | Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentInput[];
-    createMany?: Prisma.student_permitsCreateManyStudentInputEnvelope;
+export type student_permitsUpdateManyWithoutStudentsNestedInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput> | Prisma.student_permitsCreateWithoutStudentsInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentsInput[];
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentsInput | Prisma.student_permitsCreateOrConnectWithoutStudentsInput[];
+    upsert?: Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentsInput | Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentsInput[];
+    createMany?: Prisma.student_permitsCreateManyStudentsInputEnvelope;
     set?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     disconnect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     delete?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     connect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
-    update?: Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentInput | Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentInput[];
-    updateMany?: Prisma.student_permitsUpdateManyWithWhereWithoutStudentInput | Prisma.student_permitsUpdateManyWithWhereWithoutStudentInput[];
+    update?: Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentsInput | Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentsInput[];
+    updateMany?: Prisma.student_permitsUpdateManyWithWhereWithoutStudentsInput | Prisma.student_permitsUpdateManyWithWhereWithoutStudentsInput[];
     deleteMany?: Prisma.student_permitsScalarWhereInput | Prisma.student_permitsScalarWhereInput[];
 };
-export type student_permitsUncheckedUpdateManyWithoutStudentNestedInput = {
-    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput> | Prisma.student_permitsCreateWithoutStudentInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentInput[];
-    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentInput | Prisma.student_permitsCreateOrConnectWithoutStudentInput[];
-    upsert?: Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentInput | Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentInput[];
-    createMany?: Prisma.student_permitsCreateManyStudentInputEnvelope;
+export type student_permitsUncheckedUpdateManyWithoutStudentsNestedInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput> | Prisma.student_permitsCreateWithoutStudentsInput[] | Prisma.student_permitsUncheckedCreateWithoutStudentsInput[];
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudentsInput | Prisma.student_permitsCreateOrConnectWithoutStudentsInput[];
+    upsert?: Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentsInput | Prisma.student_permitsUpsertWithWhereUniqueWithoutStudentsInput[];
+    createMany?: Prisma.student_permitsCreateManyStudentsInputEnvelope;
     set?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     disconnect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     delete?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
     connect?: Prisma.student_permitsWhereUniqueInput | Prisma.student_permitsWhereUniqueInput[];
-    update?: Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentInput | Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentInput[];
-    updateMany?: Prisma.student_permitsUpdateManyWithWhereWithoutStudentInput | Prisma.student_permitsUpdateManyWithWhereWithoutStudentInput[];
+    update?: Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentsInput | Prisma.student_permitsUpdateWithWhereUniqueWithoutStudentsInput[];
+    updateMany?: Prisma.student_permitsUpdateManyWithWhereWithoutStudentsInput | Prisma.student_permitsUpdateManyWithWhereWithoutStudentsInput[];
     deleteMany?: Prisma.student_permitsScalarWhereInput | Prisma.student_permitsScalarWhereInput[];
 };
 export type student_permitsCreateNestedManyWithoutMapel_userInput = {
@@ -547,17 +558,30 @@ export type student_permitsUncheckedUpdateManyWithoutPiket_userNestedInput = {
 export type Enumstudent_permit_statusFieldUpdateOperationsInput = {
     set?: $Enums.student_permit_status;
 };
-export type student_permitsCreateWithoutStudentInput = {
+export type student_permitsCreateNestedOneWithoutStudent_permit_detailsInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedCreateWithoutStudent_permit_detailsInput>;
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudent_permit_detailsInput;
+    connect?: Prisma.student_permitsWhereUniqueInput;
+};
+export type student_permitsUpdateOneRequiredWithoutStudent_permit_detailsNestedInput = {
+    create?: Prisma.XOR<Prisma.student_permitsCreateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedCreateWithoutStudent_permit_detailsInput>;
+    connectOrCreate?: Prisma.student_permitsCreateOrConnectWithoutStudent_permit_detailsInput;
+    upsert?: Prisma.student_permitsUpsertWithoutStudent_permit_detailsInput;
+    connect?: Prisma.student_permitsWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.student_permitsUpdateToOneWithWhereWithoutStudent_permit_detailsInput, Prisma.student_permitsUpdateWithoutStudent_permit_detailsInput>, Prisma.student_permitsUncheckedUpdateWithoutStudent_permit_detailsInput>;
+};
+export type student_permitsCreateWithoutStudentsInput = {
     reason: string;
     hours_start: number;
     hours_end?: number | null;
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
+    student_permit_details?: Prisma.student_permit_detailsCreateNestedManyWithoutStudent_permitInput;
     mapel_user: Prisma.usersCreateNestedOneWithoutMapel_permits_approvalInput;
     piket_user: Prisma.usersCreateNestedOneWithoutPiket_permits_createdInput;
 };
-export type student_permitsUncheckedCreateWithoutStudentInput = {
+export type student_permitsUncheckedCreateWithoutStudentsInput = {
     id?: number;
     reason: string;
     hours_start: number;
@@ -567,27 +591,28 @@ export type student_permitsUncheckedCreateWithoutStudentInput = {
     updated_at?: Date | string;
     piket_user_id: number;
     mapel_user_id: number;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedCreateNestedManyWithoutStudent_permitInput;
 };
-export type student_permitsCreateOrConnectWithoutStudentInput = {
+export type student_permitsCreateOrConnectWithoutStudentsInput = {
     where: Prisma.student_permitsWhereUniqueInput;
-    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput>;
+    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput>;
 };
-export type student_permitsCreateManyStudentInputEnvelope = {
-    data: Prisma.student_permitsCreateManyStudentInput | Prisma.student_permitsCreateManyStudentInput[];
+export type student_permitsCreateManyStudentsInputEnvelope = {
+    data: Prisma.student_permitsCreateManyStudentsInput | Prisma.student_permitsCreateManyStudentsInput[];
     skipDuplicates?: boolean;
 };
-export type student_permitsUpsertWithWhereUniqueWithoutStudentInput = {
+export type student_permitsUpsertWithWhereUniqueWithoutStudentsInput = {
     where: Prisma.student_permitsWhereUniqueInput;
-    update: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudentInput, Prisma.student_permitsUncheckedUpdateWithoutStudentInput>;
-    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentInput, Prisma.student_permitsUncheckedCreateWithoutStudentInput>;
+    update: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudentsInput, Prisma.student_permitsUncheckedUpdateWithoutStudentsInput>;
+    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudentsInput, Prisma.student_permitsUncheckedCreateWithoutStudentsInput>;
 };
-export type student_permitsUpdateWithWhereUniqueWithoutStudentInput = {
+export type student_permitsUpdateWithWhereUniqueWithoutStudentsInput = {
     where: Prisma.student_permitsWhereUniqueInput;
-    data: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudentInput, Prisma.student_permitsUncheckedUpdateWithoutStudentInput>;
+    data: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudentsInput, Prisma.student_permitsUncheckedUpdateWithoutStudentsInput>;
 };
-export type student_permitsUpdateManyWithWhereWithoutStudentInput = {
+export type student_permitsUpdateManyWithWhereWithoutStudentsInput = {
     where: Prisma.student_permitsScalarWhereInput;
-    data: Prisma.XOR<Prisma.student_permitsUpdateManyMutationInput, Prisma.student_permitsUncheckedUpdateManyWithoutStudentInput>;
+    data: Prisma.XOR<Prisma.student_permitsUpdateManyMutationInput, Prisma.student_permitsUncheckedUpdateManyWithoutStudentsInput>;
 };
 export type student_permitsScalarWhereInput = {
     AND?: Prisma.student_permitsScalarWhereInput | Prisma.student_permitsScalarWhereInput[];
@@ -600,9 +625,9 @@ export type student_permitsScalarWhereInput = {
     status?: Prisma.Enumstudent_permit_statusFilter<"student_permits"> | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
     updated_at?: Prisma.DateTimeFilter<"student_permits"> | Date | string;
-    student_nis?: Prisma.StringFilter<"student_permits"> | string;
     piket_user_id?: Prisma.IntFilter<"student_permits"> | number;
     mapel_user_id?: Prisma.IntFilter<"student_permits"> | number;
+    studentsNis?: Prisma.StringNullableFilter<"student_permits"> | string | null;
 };
 export type student_permitsCreateWithoutMapel_userInput = {
     reason: string;
@@ -611,8 +636,9 @@ export type student_permitsCreateWithoutMapel_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
+    student_permit_details?: Prisma.student_permit_detailsCreateNestedManyWithoutStudent_permitInput;
     piket_user: Prisma.usersCreateNestedOneWithoutPiket_permits_createdInput;
-    student: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
+    students?: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
 };
 export type student_permitsUncheckedCreateWithoutMapel_userInput = {
     id?: number;
@@ -622,8 +648,9 @@ export type student_permitsUncheckedCreateWithoutMapel_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     piket_user_id: number;
+    studentsNis?: string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedCreateNestedManyWithoutStudent_permitInput;
 };
 export type student_permitsCreateOrConnectWithoutMapel_userInput = {
     where: Prisma.student_permitsWhereUniqueInput;
@@ -640,8 +667,9 @@ export type student_permitsCreateWithoutPiket_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
+    student_permit_details?: Prisma.student_permit_detailsCreateNestedManyWithoutStudent_permitInput;
     mapel_user: Prisma.usersCreateNestedOneWithoutMapel_permits_approvalInput;
-    student: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
+    students?: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
 };
 export type student_permitsUncheckedCreateWithoutPiket_userInput = {
     id?: number;
@@ -651,8 +679,9 @@ export type student_permitsUncheckedCreateWithoutPiket_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     mapel_user_id: number;
+    studentsNis?: string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedCreateNestedManyWithoutStudent_permitInput;
 };
 export type student_permitsCreateOrConnectWithoutPiket_userInput = {
     where: Prisma.student_permitsWhereUniqueInput;
@@ -688,7 +717,66 @@ export type student_permitsUpdateManyWithWhereWithoutPiket_userInput = {
     where: Prisma.student_permitsScalarWhereInput;
     data: Prisma.XOR<Prisma.student_permitsUpdateManyMutationInput, Prisma.student_permitsUncheckedUpdateManyWithoutPiket_userInput>;
 };
-export type student_permitsCreateManyStudentInput = {
+export type student_permitsCreateWithoutStudent_permit_detailsInput = {
+    reason: string;
+    hours_start: number;
+    hours_end?: number | null;
+    status?: $Enums.student_permit_status;
+    created_at?: Date | string;
+    updated_at?: Date | string;
+    mapel_user: Prisma.usersCreateNestedOneWithoutMapel_permits_approvalInput;
+    piket_user: Prisma.usersCreateNestedOneWithoutPiket_permits_createdInput;
+    students?: Prisma.studentsCreateNestedOneWithoutStudentPermitsInput;
+};
+export type student_permitsUncheckedCreateWithoutStudent_permit_detailsInput = {
+    id?: number;
+    reason: string;
+    hours_start: number;
+    hours_end?: number | null;
+    status?: $Enums.student_permit_status;
+    created_at?: Date | string;
+    updated_at?: Date | string;
+    piket_user_id: number;
+    mapel_user_id: number;
+    studentsNis?: string | null;
+};
+export type student_permitsCreateOrConnectWithoutStudent_permit_detailsInput = {
+    where: Prisma.student_permitsWhereUniqueInput;
+    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedCreateWithoutStudent_permit_detailsInput>;
+};
+export type student_permitsUpsertWithoutStudent_permit_detailsInput = {
+    update: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedUpdateWithoutStudent_permit_detailsInput>;
+    create: Prisma.XOR<Prisma.student_permitsCreateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedCreateWithoutStudent_permit_detailsInput>;
+    where?: Prisma.student_permitsWhereInput;
+};
+export type student_permitsUpdateToOneWithWhereWithoutStudent_permit_detailsInput = {
+    where?: Prisma.student_permitsWhereInput;
+    data: Prisma.XOR<Prisma.student_permitsUpdateWithoutStudent_permit_detailsInput, Prisma.student_permitsUncheckedUpdateWithoutStudent_permit_detailsInput>;
+};
+export type student_permitsUpdateWithoutStudent_permit_detailsInput = {
+    reason?: Prisma.StringFieldUpdateOperationsInput | string;
+    hours_start?: Prisma.IntFieldUpdateOperationsInput | number;
+    hours_end?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
+    created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    mapel_user?: Prisma.usersUpdateOneRequiredWithoutMapel_permits_approvalNestedInput;
+    piket_user?: Prisma.usersUpdateOneRequiredWithoutPiket_permits_createdNestedInput;
+    students?: Prisma.studentsUpdateOneWithoutStudentPermitsNestedInput;
+};
+export type student_permitsUncheckedUpdateWithoutStudent_permit_detailsInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    reason?: Prisma.StringFieldUpdateOperationsInput | string;
+    hours_start?: Prisma.IntFieldUpdateOperationsInput | number;
+    hours_end?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
+    created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+export type student_permitsCreateManyStudentsInput = {
     id?: number;
     reason: string;
     hours_start: number;
@@ -699,17 +787,18 @@ export type student_permitsCreateManyStudentInput = {
     piket_user_id: number;
     mapel_user_id: number;
 };
-export type student_permitsUpdateWithoutStudentInput = {
+export type student_permitsUpdateWithoutStudentsInput = {
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
     hours_start?: Prisma.IntFieldUpdateOperationsInput | number;
     hours_end?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    student_permit_details?: Prisma.student_permit_detailsUpdateManyWithoutStudent_permitNestedInput;
     mapel_user?: Prisma.usersUpdateOneRequiredWithoutMapel_permits_approvalNestedInput;
     piket_user?: Prisma.usersUpdateOneRequiredWithoutPiket_permits_createdNestedInput;
 };
-export type student_permitsUncheckedUpdateWithoutStudentInput = {
+export type student_permitsUncheckedUpdateWithoutStudentsInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
     hours_start?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -719,8 +808,9 @@ export type student_permitsUncheckedUpdateWithoutStudentInput = {
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
     mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedUpdateManyWithoutStudent_permitNestedInput;
 };
-export type student_permitsUncheckedUpdateManyWithoutStudentInput = {
+export type student_permitsUncheckedUpdateManyWithoutStudentsInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
     hours_start?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -739,8 +829,8 @@ export type student_permitsCreateManyMapel_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     piket_user_id: number;
+    studentsNis?: string | null;
 };
 export type student_permitsCreateManyPiket_userInput = {
     id?: number;
@@ -750,8 +840,8 @@ export type student_permitsCreateManyPiket_userInput = {
     status?: $Enums.student_permit_status;
     created_at?: Date | string;
     updated_at?: Date | string;
-    student_nis: string;
     mapel_user_id: number;
+    studentsNis?: string | null;
 };
 export type student_permitsUpdateWithoutMapel_userInput = {
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -760,8 +850,9 @@ export type student_permitsUpdateWithoutMapel_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    student_permit_details?: Prisma.student_permit_detailsUpdateManyWithoutStudent_permitNestedInput;
     piket_user?: Prisma.usersUpdateOneRequiredWithoutPiket_permits_createdNestedInput;
-    student?: Prisma.studentsUpdateOneRequiredWithoutStudentPermitsNestedInput;
+    students?: Prisma.studentsUpdateOneWithoutStudentPermitsNestedInput;
 };
 export type student_permitsUncheckedUpdateWithoutMapel_userInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -771,8 +862,9 @@ export type student_permitsUncheckedUpdateWithoutMapel_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedUpdateManyWithoutStudent_permitNestedInput;
 };
 export type student_permitsUncheckedUpdateManyWithoutMapel_userInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -782,8 +874,8 @@ export type student_permitsUncheckedUpdateManyWithoutMapel_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     piket_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type student_permitsUpdateWithoutPiket_userInput = {
     reason?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -792,8 +884,9 @@ export type student_permitsUpdateWithoutPiket_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    student_permit_details?: Prisma.student_permit_detailsUpdateManyWithoutStudent_permitNestedInput;
     mapel_user?: Prisma.usersUpdateOneRequiredWithoutMapel_permits_approvalNestedInput;
-    student?: Prisma.studentsUpdateOneRequiredWithoutStudentPermitsNestedInput;
+    students?: Prisma.studentsUpdateOneWithoutStudentPermitsNestedInput;
 };
 export type student_permitsUncheckedUpdateWithoutPiket_userInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -803,8 +896,9 @@ export type student_permitsUncheckedUpdateWithoutPiket_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    student_permit_details?: Prisma.student_permit_detailsUncheckedUpdateManyWithoutStudent_permitNestedInput;
 };
 export type student_permitsUncheckedUpdateManyWithoutPiket_userInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -814,8 +908,32 @@ export type student_permitsUncheckedUpdateManyWithoutPiket_userInput = {
     status?: Prisma.Enumstudent_permit_statusFieldUpdateOperationsInput | $Enums.student_permit_status;
     created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    student_nis?: Prisma.StringFieldUpdateOperationsInput | string;
     mapel_user_id?: Prisma.IntFieldUpdateOperationsInput | number;
+    studentsNis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+/**
+ * Count Type Student_permitsCountOutputType
+ */
+export type Student_permitsCountOutputType = {
+    student_permit_details: number;
+};
+export type Student_permitsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    student_permit_details?: boolean | Student_permitsCountOutputTypeCountStudent_permit_detailsArgs;
+};
+/**
+ * Student_permitsCountOutputType without action
+ */
+export type Student_permitsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Student_permitsCountOutputType
+     */
+    select?: Prisma.Student_permitsCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * Student_permitsCountOutputType without action
+ */
+export type Student_permitsCountOutputTypeCountStudent_permit_detailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.student_permit_detailsWhereInput;
 };
 export type student_permitsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -825,12 +943,14 @@ export type student_permitsSelect<ExtArgs extends runtime.Types.Extensions.Inter
     status?: boolean;
     created_at?: boolean;
     updated_at?: boolean;
-    student_nis?: boolean;
     piket_user_id?: boolean;
     mapel_user_id?: boolean;
+    studentsNis?: boolean;
+    student_permit_details?: boolean | Prisma.student_permits$student_permit_detailsArgs<ExtArgs>;
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
+    _count?: boolean | Prisma.Student_permitsCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["student_permits"]>;
 export type student_permitsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -840,12 +960,12 @@ export type student_permitsSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
     status?: boolean;
     created_at?: boolean;
     updated_at?: boolean;
-    student_nis?: boolean;
     piket_user_id?: boolean;
     mapel_user_id?: boolean;
+    studentsNis?: boolean;
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
 }, ExtArgs["result"]["student_permits"]>;
 export type student_permitsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -855,12 +975,12 @@ export type student_permitsSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
     status?: boolean;
     created_at?: boolean;
     updated_at?: boolean;
-    student_nis?: boolean;
     piket_user_id?: boolean;
     mapel_user_id?: boolean;
+    studentsNis?: boolean;
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
 }, ExtArgs["result"]["student_permits"]>;
 export type student_permitsSelectScalar = {
     id?: boolean;
@@ -870,32 +990,35 @@ export type student_permitsSelectScalar = {
     status?: boolean;
     created_at?: boolean;
     updated_at?: boolean;
-    student_nis?: boolean;
     piket_user_id?: boolean;
     mapel_user_id?: boolean;
+    studentsNis?: boolean;
 };
-export type student_permitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reason" | "hours_start" | "hours_end" | "status" | "created_at" | "updated_at" | "student_nis" | "piket_user_id" | "mapel_user_id", ExtArgs["result"]["student_permits"]>;
+export type student_permitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reason" | "hours_start" | "hours_end" | "status" | "created_at" | "updated_at" | "piket_user_id" | "mapel_user_id" | "studentsNis", ExtArgs["result"]["student_permits"]>;
 export type student_permitsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    student_permit_details?: boolean | Prisma.student_permits$student_permit_detailsArgs<ExtArgs>;
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
+    _count?: boolean | Prisma.Student_permitsCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type student_permitsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
 };
 export type student_permitsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     mapel_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
     piket_user?: boolean | Prisma.usersDefaultArgs<ExtArgs>;
-    student?: boolean | Prisma.studentsDefaultArgs<ExtArgs>;
+    students?: boolean | Prisma.student_permits$studentsArgs<ExtArgs>;
 };
 export type $student_permitsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "student_permits";
     objects: {
+        student_permit_details: Prisma.$student_permit_detailsPayload<ExtArgs>[];
         mapel_user: Prisma.$usersPayload<ExtArgs>;
         piket_user: Prisma.$usersPayload<ExtArgs>;
-        student: Prisma.$studentsPayload<ExtArgs>;
+        students: Prisma.$studentsPayload<ExtArgs> | null;
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: number;
@@ -905,9 +1028,9 @@ export type $student_permitsPayload<ExtArgs extends runtime.Types.Extensions.Int
         status: $Enums.student_permit_status;
         created_at: Date;
         updated_at: Date;
-        student_nis: string;
         piket_user_id: number;
         mapel_user_id: number;
+        studentsNis: string | null;
     }, ExtArgs["result"]["student_permits"]>;
     composites: {};
 };
@@ -1237,9 +1360,10 @@ export interface student_permitsDelegate<ExtArgs extends runtime.Types.Extension
  */
 export interface Prisma__student_permitsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    student_permit_details<T extends Prisma.student_permits$student_permit_detailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.student_permits$student_permit_detailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$student_permit_detailsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     mapel_user<T extends Prisma.usersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.usersDefaultArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     piket_user<T extends Prisma.usersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.usersDefaultArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    student<T extends Prisma.studentsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.studentsDefaultArgs<ExtArgs>>): Prisma.Prisma__studentsClient<runtime.Types.Result.GetResult<Prisma.$studentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    students<T extends Prisma.student_permits$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.student_permits$studentsArgs<ExtArgs>>): Prisma.Prisma__studentsClient<runtime.Types.Result.GetResult<Prisma.$studentsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1272,9 +1396,9 @@ export interface student_permitsFieldRefs {
     readonly status: Prisma.FieldRef<"student_permits", 'student_permit_status'>;
     readonly created_at: Prisma.FieldRef<"student_permits", 'DateTime'>;
     readonly updated_at: Prisma.FieldRef<"student_permits", 'DateTime'>;
-    readonly student_nis: Prisma.FieldRef<"student_permits", 'String'>;
     readonly piket_user_id: Prisma.FieldRef<"student_permits", 'Int'>;
     readonly mapel_user_id: Prisma.FieldRef<"student_permits", 'Int'>;
+    readonly studentsNis: Prisma.FieldRef<"student_permits", 'String'>;
 }
 /**
  * student_permits findUnique
@@ -1652,6 +1776,47 @@ export type student_permitsDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
      * Limit how many student_permits to delete.
      */
     limit?: number;
+};
+/**
+ * student_permits.student_permit_details
+ */
+export type student_permits$student_permit_detailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the student_permit_details
+     */
+    select?: Prisma.student_permit_detailsSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the student_permit_details
+     */
+    omit?: Prisma.student_permit_detailsOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.student_permit_detailsInclude<ExtArgs> | null;
+    where?: Prisma.student_permit_detailsWhereInput;
+    orderBy?: Prisma.student_permit_detailsOrderByWithRelationInput | Prisma.student_permit_detailsOrderByWithRelationInput[];
+    cursor?: Prisma.student_permit_detailsWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.Student_permit_detailsScalarFieldEnum | Prisma.Student_permit_detailsScalarFieldEnum[];
+};
+/**
+ * student_permits.students
+ */
+export type student_permits$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the students
+     */
+    select?: Prisma.studentsSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the students
+     */
+    omit?: Prisma.studentsOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.studentsInclude<ExtArgs> | null;
+    where?: Prisma.studentsWhereInput;
 };
 /**
  * student_permits without action

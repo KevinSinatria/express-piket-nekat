@@ -64,8 +64,12 @@ const exportStudentPermits = async (
       worksheet.addRow({
         no: index + 1,
         date: item.created_at.toLocaleDateString("id-ID"),
-        student_name: item.student.name,
-        nis: item.student_nis,
+        student_name: item.student_permit_details
+          .map((student) => student.student.name)
+          .join(", "),
+        nis: item.student_permit_details
+          .map((student) => student.student.nis)
+          .join(", "),
         reason: item.reason,
         hours: `${item.hours_start} - ${item.hours_end || ""}`,
         mapel: item.mapel_user.fullname,

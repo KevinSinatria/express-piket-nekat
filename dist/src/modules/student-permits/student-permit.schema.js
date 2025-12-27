@@ -20,9 +20,11 @@ const getAllSchema = z.object({
 const createSchema = z.object({
     body: z.object({
         student_nis: z
+            .array(z
             .string()
-            .min(10, "NIS must be at least 10 characters")
-            .max(20, "NIS too long"),
+            .min(8, "NIS must be at least 8 characters")
+            .max(20, "NIS too long"))
+            .min(1, "At least one NIS is required"),
         reason: z.string().min(5, "Reason must be descriptive"),
         hours_start: z.number().int().min(1, "Start hour must be valid").max(24),
         hours_end: z
@@ -43,7 +45,10 @@ const updateSchema = z.object({
         id: z.coerce.number().int({ message: "Permit ID must be a valid integer" }),
     }),
     body: z.object({
-        student_nis: z.string().min(10).max(20).optional(),
+        student_nis: z.array(z
+            .string()
+            .min(10, "NIS must be at least 10 characters")
+            .max(20, "NIS too long")),
         reason: z.string().min(5).optional(),
         hours_start: z.number().int().min(1).max(24).optional(),
         hours_end: z.number().int().min(1).max(24).optional().nullable(),

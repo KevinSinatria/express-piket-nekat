@@ -28,7 +28,11 @@ const getStudentPermitReportData = async (
   const studentPermits = await prisma.student_permits.findMany({
     where,
     include: {
-      student: true,
+      student_permit_details: {
+        include: {
+          student: true,
+        },
+      },
       mapel_user: {
         select: {
           fullname: true,

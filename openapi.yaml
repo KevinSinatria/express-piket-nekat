@@ -21,6 +21,10 @@ tags:
     description: CRUD dan pengelolaan tugas guru (Mapel Only).
   - name: Reports
     description: Endpoint untuk laporan data (Admin & Piket).
+  - name: Classes Management
+    description: CRUD dan pengelolaan data Kelas (Admin & Piket & Mapel).
+  - name: Year Period
+    description: Endpoint untuk mendapatkan data Tahun Ajaran Aktif.
 paths:
   /auth/login:
     post:
@@ -80,6 +84,32 @@ paths:
           description: Logout berhasil.
       security:
         - bearerAuth: [] 
+  /year-periods:
+    get:
+      summary: Mendapatkan Tahun Ajaran Aktif
+      deprecated: false
+      description: Mengambil data periode tahun ajaran yang saat ini berlaku.
+      tags:
+        - Year Period
+      parameters: []
+      responses:
+        '200':
+          description: Data tahun ajaran berhasil diambil.
+      security:
+        - bearerAuth: []
+  /roles:
+    get:
+      summary: Mendapatkan Semua Daftar Role
+      deprecated: false
+      description: Mengambil daftar semua role yang ada di sistem. Hanya diakses oleh ADMIN.
+      tags:
+        - User Management
+      parameters: []
+      responses:
+        '200':
+          description: Daftar role berhasil diambil.
+      security:
+        - bearerAuth: []
   /users:
     post:
       summary: Membuat Pengguna Baru
@@ -358,8 +388,10 @@ paths:
               type: object
               properties:
                 student_nis:
-                  type: string
-                  description: NIS siswa yang mengajukan izin.
+                  type: array
+                  items:
+                    type: string
+                  description: NIS dari satu atau lebih siswa yang mengajukan izin.
                 reason:
                   type: string
                   description: Alasan keluar/izin siswa.
@@ -367,7 +399,8 @@ paths:
                   type: integer
                   description: Jam ke- mulai izin.
                 hours_end:
-                  type: 'null'
+                  type: integer
+                  nullable: true
                   description: Jam ke- akhir izin. Null jika izin sampai akhir hari/belum diketahui.
                 mapel_user_id:
                   type: integer
@@ -379,8 +412,8 @@ paths:
                 - hours_end
                 - mapel_user_id
             example:
-              student_nis: '232410465'
-              reason: Sakit demam
+              student_nis: ['232410465', '232410466']
+              reason: Sakit demam berjamaah
               hours_start: 10
               hours_end: null
               mapel_user_id: 62
@@ -397,7 +430,76 @@ paths:
       description: Mengambil daftar semua surat izin yang sudah diproses atau masih pending (dengan filter dan paginasi).
       tags:
         - Student Permits
-      parameters: []
+      parameters:
+        - name: page
+          in: query
+          description: Nomor halaman.
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Jumlah data per halaman.
+          schema:
+            type: integer
+            default: 10
+        - name: search
+          in: query
+          description: Cari berdasarkan NIS atau Nama Siswa.
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter berdasarkan status.
+          schema:
+            type: string
+            enum: [PENDING_MAPEL, PENDING_PIKET, APPROVED, REJECTED, CANCELED]
+        - name: piket_user_id
+          in: query
+          description: Filter berdasarkan ID Guru Piket.
+          schema:
+            type: integer
+        - name: mapel_user_id
+          in: query
+          description: Filter berdasarkan ID Guru Mapel.
+          schema:
+            type: integer
+        - name: date_start
+          in: query
+          description: Filter rentang tanggal (mulai).
+          schema:
+            type: string
+            format: date
+        - name: date_end
+          in: query
+          description: Filter rentang tanggal (akhir).
+          schema:
+            type: string
+            format: date
+        - name: year_period_id
+          in: query
+          description: Filter berdasarkan ID Tahun Ajaran.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Daftar surat izin berhasil diambil.
+      security:
+        - bearerAuth: []
+  /student-permits/new-approved:
+    get:
+      summary: Mendapatkan Izin yang Baru Disetujui (Satpam)
+      deprecated: false
+      description: Mengambil daftar semua surat izin dengan status APPROVED dalam rentang waktu sekitar hari ini. Hanya diakses oleh SATPAM.
+      tags:
+        - Student Permits
+      parameters:
+        - name: year_period_id
+          in: query
+          description: ID Tahun Ajaran untuk filter detail siswa.
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: Daftar surat izin berhasil diambil.
@@ -472,13 +574,16 @@ paths:
               type: object
               properties:
                 student_nis:
-                  type: string
+                  type: array
+                  items:
+                    type: string
                 reason:
                   type: string
                 hours_start:
                   type: integer
                 hours_end:
-                  type: 'null'
+                  type: integer
+                  nullable: true
                 mapel_user_id:
                   type: integer
               required:
@@ -488,8 +593,8 @@ paths:
                 - hours_end
                 - mapel_user_id
             example:
-              student_nis: '232410465'
-              reason: Sakit Kepala
+              student_nis: ['232410465']
+              reason: Sakit Kepala Berat
               hours_start: 10
               hours_end: null
               mapel_user_id: 62
@@ -727,6 +832,44 @@ paths:
           description: Mata pelajaran berhasil dihapus.
         '404':
           $ref: '#/components/responses/Record not found'
+      security:
+        - bearerAuth: []
+  /classes:
+    get:
+      summary: Mendapatkan Semua Daftar Kelas
+      deprecated: false
+      description: Mengambil daftar semua kelas dengan paginasi dan fitur pencarian. Hanya diakses oleh ADMIN dan PIKET.
+      tags:
+        - Classes Management
+      parameters:
+        - name: page
+          in: query
+          description: Nomor halaman yang diminta.
+          required: false
+          example: '1'
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: Jumlah item per halaman.
+          required: false
+          example: '10'
+          schema:
+            type: integer
+            default: 10
+        - name: search
+          in: query
+          description: Kata kunci pencarian (berdasarkan nama kelas).
+          required: false
+          example: 'XI PPLG'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Daftar kelas berhasil diambil.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
       security:
         - bearerAuth: []
   /piket-schedules:

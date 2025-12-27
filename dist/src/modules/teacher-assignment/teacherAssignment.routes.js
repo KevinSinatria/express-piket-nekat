@@ -3,7 +3,7 @@ import { Router } from "express";
 import { validate } from "../../middlewares/validate.middleware.js";
 import { createTeacherAssignmentSchema, getTeacherAssignmentsSchema, updateTeacherAssignmentSchema, teacherAssignmentIdSchema, } from "./teacherAssignment.schema.js";
 import { createTeacherAssignmentController, deleteTeacherAssignmentController, getAllTeacherAssignmentsController, getTeacherAssignmentByIdController, updateTeacherAssignmentController, } from "./teacherAssignment.controller.js";
-import { authMiddleware, roleCheckMiddleware } from "../../middlewares/auth.middleware.js";
+import { authMiddleware, roleCheckMiddleware, } from "../../middlewares/auth.middleware.js";
 const router = Router();
 router.use(authMiddleware);
 router.get("/", roleCheckMiddleware(["piket", "mapel", "admin"]), validate(getTeacherAssignmentsSchema), getAllTeacherAssignmentsController);

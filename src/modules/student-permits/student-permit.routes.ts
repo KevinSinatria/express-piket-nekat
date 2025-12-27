@@ -13,6 +13,7 @@ router.use(authMiddleware);
 router.post(
   "/",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
+  validate(studentPermitSchema.createSchema),
   studentPermitController.create
 );
 router.get(
@@ -52,6 +53,11 @@ router.patch(
   roleCheckMiddleware(["ADMIN", "PIKET"]),
   validate(studentPermitSchema.processPermitSchema),
   studentPermitController.process
+);
+router.get(
+  "/new-approved",
+  roleCheckMiddleware(["SATPAM"]),
+  studentPermitController.getAllNewApproved
 );
 
 export default router;
