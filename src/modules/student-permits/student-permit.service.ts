@@ -182,7 +182,7 @@ const create = async (
   prisma: PrismaClient,
   data: CreateData,
   user_id: number,
-  year_period_id: YearPeriodIdQuery
+  year_period_id: YearPeriodIdQuery,
 ) => {
   const studentPermit = await prisma.student_permits.create({
     data: {
@@ -269,7 +269,7 @@ const create = async (
 const getById = async (
   prisma: PrismaClient,
   id: IdParams,
-  year_period_id: YearPeriodIdQuery
+  year_period_id: YearPeriodIdQuery,
 ) => {
   const studentPermit = await prisma.student_permits.findUniqueOrThrow({
     where: {
@@ -384,7 +384,7 @@ const deleteById = async (prisma: PrismaClient, id: IdParams) => {
 const getMapelPending = async (
   prisma: PrismaClient,
   user_id: number,
-  year_period_id: YearPeriodIdQuery
+  year_period_id: YearPeriodIdQuery,
 ) => {
   const mapelPendingStudentPermits = await prisma.student_permits.findMany({
     where: {
@@ -470,7 +470,7 @@ const getMapelPending = async (
 const getPiketPending = async (
   prisma: PrismaClient,
   user_id: number,
-  year_period_id: YearPeriodIdQuery
+  year_period_id: YearPeriodIdQuery,
 ) => {
   const piketPendingStudentPermits = await prisma.student_permits.findMany({
     where: {
@@ -550,7 +550,7 @@ const getPiketPending = async (
 const process = async (
   prisma: PrismaClient,
   id: IdParams,
-  data: ProcessData
+  data: ProcessData,
 ) => {
   return await prisma.student_permits.update({
     where: {
@@ -564,7 +564,7 @@ const process = async (
 
 const getAllNewApproved = async (
   prisma: PrismaClient,
-  year_period_id: number
+  year_period_id: number,
 ) => {
   const studentPermits = await prisma.student_permits.findMany({
     where: {
@@ -586,7 +586,9 @@ const getAllNewApproved = async (
               nis: true,
               detail_students: {
                 where: {
-                  ...(year_period_id && { id_year_period: year_period_id }),
+                  ...(year_period_id && {
+                    id_year_period: Number(year_period_id),
+                  }),
                 },
                 select: {
                   classes: {
