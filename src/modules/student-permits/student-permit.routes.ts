@@ -14,50 +14,50 @@ router.post(
   "/",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
   validate(studentPermitSchema.createSchema),
-  studentPermitController.create
+  studentPermitController.create,
 );
 router.get(
   "/",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
-  studentPermitController.getAll
+  studentPermitController.getAll,
 );
 router.get(
   "/mapel/pending",
   roleCheckMiddleware(["ADMIN", "MAPEL"]),
-  studentPermitController.getMapelPending
+  studentPermitController.getMapelPending,
 );
 router.get(
   "/piket/ready-to-approve",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
-  studentPermitController.getPiketPending
+  studentPermitController.getPiketPending,
+);
+router.get(
+  "/new-approved",
+  roleCheckMiddleware(["SATPAM", "ADMIN"]),
+  studentPermitController.getAllNewApproved,
 );
 router.get("/:id", studentPermitController.getById);
 router.put(
   "/:id",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
-  studentPermitController.update
+  studentPermitController.update,
 );
 router.delete(
   "/:id",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
-  studentPermitController.deleteById
+  studentPermitController.deleteById,
 );
 router.patch(
   "/:id/process/mapel",
   roleCheckMiddleware(["ADMIN", "MAPEL"]),
   validate(studentPermitSchema.processPermitSchema),
-  studentPermitController.process
+  studentPermitController.process,
 );
 router.patch(
   "/:id/process/piket",
   roleCheckMiddleware(["ADMIN", "PIKET"]),
   validate(studentPermitSchema.processPermitSchema),
-  studentPermitController.process
-);
-router.get(
-  "/new-approved",
-  roleCheckMiddleware(["SATPAM"]),
-  studentPermitController.getAllNewApproved
+  studentPermitController.process,
 );
 
 export default router;

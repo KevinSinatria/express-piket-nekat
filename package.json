@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
+    "deploy": "tsc && vercel --prod",
     "build:docs": "npx elements build openapi.yaml -o public/docs/index.html",
     "start": "node dist/src/server.js"
   },

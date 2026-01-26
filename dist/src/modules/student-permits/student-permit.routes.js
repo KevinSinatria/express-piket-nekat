@@ -9,11 +9,11 @@ router.post("/", roleCheckMiddleware(["ADMIN", "PIKET"]), validate(studentPermit
 router.get("/", roleCheckMiddleware(["ADMIN", "PIKET"]), studentPermitController.getAll);
 router.get("/mapel/pending", roleCheckMiddleware(["ADMIN", "MAPEL"]), studentPermitController.getMapelPending);
 router.get("/piket/ready-to-approve", roleCheckMiddleware(["ADMIN", "PIKET"]), studentPermitController.getPiketPending);
+router.get("/new-approved", roleCheckMiddleware(["SATPAM", "ADMIN"]), studentPermitController.getAllNewApproved);
 router.get("/:id", studentPermitController.getById);
 router.put("/:id", roleCheckMiddleware(["ADMIN", "PIKET"]), studentPermitController.update);
 router.delete("/:id", roleCheckMiddleware(["ADMIN", "PIKET"]), studentPermitController.deleteById);
 router.patch("/:id/process/mapel", roleCheckMiddleware(["ADMIN", "MAPEL"]), validate(studentPermitSchema.processPermitSchema), studentPermitController.process);
 router.patch("/:id/process/piket", roleCheckMiddleware(["ADMIN", "PIKET"]), validate(studentPermitSchema.processPermitSchema), studentPermitController.process);
-router.get("/new-approved", roleCheckMiddleware(["SATPAM"]), studentPermitController.getAllNewApproved);
 export default router;
 //# sourceMappingURL=student-permit.routes.js.map

@@ -41,7 +41,7 @@ app.use("/api-docs", express.static(path.join(process.cwd(), "openapi.yaml")));
 app.use(
   "/docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, swaggerOptions)
+  swaggerUi.setup(swaggerDocument, swaggerOptions),
 );
 
 // Endpoint utama

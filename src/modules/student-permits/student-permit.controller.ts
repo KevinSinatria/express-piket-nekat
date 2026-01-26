@@ -38,7 +38,7 @@ type DeleteByIdRequest = Request<
 const getAll = async (
   req: GetAllRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const result = await studentPermitService.getAll(prisma, req.query);
@@ -55,7 +55,7 @@ const getAll = async (
 const create = async (
   req: CreateRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.user!;
@@ -64,7 +64,7 @@ const create = async (
       prisma,
       req.body,
       id,
-      Number(year_period_id)
+      Number(year_period_id),
     );
     res.status(201).json({
       success: true,
@@ -79,7 +79,7 @@ const create = async (
 const getById = async (
   req: GetByIdRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
@@ -87,7 +87,7 @@ const getById = async (
     const result = await studentPermitService.getById(
       prisma,
       id,
-      year_period_id
+      year_period_id,
     );
 
     res.status(200).json({
@@ -103,7 +103,7 @@ const getById = async (
 const update = async (
   req: UpdateRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
@@ -121,7 +121,7 @@ const update = async (
 const process = async (
   req: ProcessRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
@@ -158,7 +158,7 @@ const process = async (
 const deleteById = async (
   req: DeleteByIdRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.params;
@@ -176,7 +176,7 @@ const deleteById = async (
 const getMapelPending = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.user!;
@@ -184,7 +184,7 @@ const getMapelPending = async (
     const result = await studentPermitService.getMapelPending(
       prisma,
       id,
-      Number(year_period_id)
+      Number(year_period_id),
     );
     res.status(200).json({
       success: true,
@@ -199,7 +199,7 @@ const getMapelPending = async (
 const getPiketPending = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { id } = req.user!;
@@ -207,7 +207,7 @@ const getPiketPending = async (
     const result = await studentPermitService.getPiketPending(
       prisma,
       id,
-      Number(year_period_id)
+      Number(year_period_id),
     );
     res.status(200).json({
       success: true,
@@ -222,13 +222,13 @@ const getPiketPending = async (
 const getAllNewApproved = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const { year_period_id } = req.query;
     const result = await studentPermitService.getAllNewApproved(
       prisma,
-      Number(year_period_id)
+      Number(year_period_id),
     );
     res.status(200).json({
       success: true,
