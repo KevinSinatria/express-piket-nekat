@@ -513,7 +513,9 @@ const getAllNewApproved = async (prisma, year_period_id) => {
                             nis: true,
                             detail_students: {
                                 where: {
-                                    ...(year_period_id && { id_year_period: year_period_id }),
+                                    ...(year_period_id && {
+                                        id_year_period: Number(year_period_id),
+                                    }),
                                 },
                                 select: {
                                     classes: {

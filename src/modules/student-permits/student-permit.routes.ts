@@ -33,7 +33,7 @@ router.get(
 );
 router.get(
   "/new-approved",
-  roleCheckMiddleware(["SATPAM"]),
+  roleCheckMiddleware(["SATPAM", "ADMIN"]),
   studentPermitController.getAllNewApproved,
 );
 router.get("/:id", studentPermitController.getById);
