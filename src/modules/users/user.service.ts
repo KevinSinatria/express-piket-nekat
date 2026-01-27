@@ -42,7 +42,7 @@ const getAll = async (
     search?: string;
     page?: string;
     limit?: string;
-  }
+  },
 ) => {
   const {
     page,
@@ -178,9 +178,13 @@ const getMapelUsers = async (prisma: PrismaClient) => {
 const update = async (
   prisma: PrismaClient,
   id: string,
-  data: z.infer<typeof updateUserSchema>["body"]
+  data: z.infer<typeof updateUserSchema>["body"],
 ) => {
-  const hashedPassword = await bcrypt.hash(data.password, 12);
+  let hashedPassword: string | undefined = undefined;
+
+  if (data.password) {
+    hashedPassword = await bcrypt.hash(data.password, 12);
+  }
 
   return await prisma.users.update({
     where: {
@@ -189,7 +193,7 @@ const update = async (
     data: {
       username: data.username.toLowerCase(),
       fullname: data.fullname,
-      password: hashedPassword,
+      ...(hashedPassword && { password: hashedPassword }),
       ...(data.nip && { nip: data.nip }),
     },
   });

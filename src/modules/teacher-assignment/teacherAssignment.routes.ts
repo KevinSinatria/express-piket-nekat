@@ -27,14 +27,14 @@ router.get(
   "/",
   roleCheckMiddleware(["piket", "mapel", "admin"]),
   validate(getTeacherAssignmentsSchema),
-  getAllTeacherAssignmentsController
+  getAllTeacherAssignmentsController,
 );
 
 router.get(
   "/:id",
   roleCheckMiddleware(["piket", "mapel", "admin"]),
   validate(teacherAssignmentIdSchema),
-  getTeacherAssignmentByIdController
+  getTeacherAssignmentByIdController,
 );
 
 const mapelAndAdminOnly = roleCheckMiddleware(["mapel", "admin"]);
@@ -43,19 +43,19 @@ router.post(
   "/",
   mapelAndAdminOnly,
   validate(createTeacherAssignmentSchema),
-  createTeacherAssignmentController
+  createTeacherAssignmentController,
 );
 router.put(
   "/:id",
   mapelAndAdminOnly,
   validate(updateTeacherAssignmentSchema),
-  updateTeacherAssignmentController
+  updateTeacherAssignmentController,
 );
 router.delete(
   "/:id",
-  mapelAndAdminOnly,
+  roleCheckMiddleware(["mapel", "admin", "piket"]),
   validate(teacherAssignmentIdSchema),
-  deleteTeacherAssignmentController
+  deleteTeacherAssignmentController,
 );
 
 export default router;
