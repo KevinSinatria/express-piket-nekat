@@ -11,6 +11,6 @@ router.get("/:id", roleCheckMiddleware(["piket", "mapel", "admin"]), validate(te
 const mapelAndAdminOnly = roleCheckMiddleware(["mapel", "admin"]);
 router.post("/", mapelAndAdminOnly, validate(createTeacherAssignmentSchema), createTeacherAssignmentController);
 router.put("/:id", mapelAndAdminOnly, validate(updateTeacherAssignmentSchema), updateTeacherAssignmentController);
-router.delete("/:id", mapelAndAdminOnly, validate(teacherAssignmentIdSchema), deleteTeacherAssignmentController);
+router.delete("/:id", roleCheckMiddleware(["mapel", "admin", "piket"]), validate(teacherAssignmentIdSchema), deleteTeacherAssignmentController);
 export default router;
 //# sourceMappingURL=teacherAssignment.routes.js.map
