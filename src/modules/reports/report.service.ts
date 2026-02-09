@@ -2,11 +2,13 @@ import type { PrismaClient } from "../../generated/prisma/client.js";
 import type z from "zod";
 import type { reportSchema } from "./report.schema.js";
 
-type GetReportQuery = z.infer<typeof reportSchema.getReportSchema>["query"];
+type GetReportQuery = z.infer<
+  typeof reportSchema.getStudentPermitReportSchema
+>["query"];
 
 const getStudentPermitReportData = async (
   prisma: PrismaClient,
-  query: GetReportQuery
+  query: GetReportQuery,
 ) => {
   const { start_date, end_date, status } = query;
 
@@ -54,6 +56,28 @@ const getStudentPermitReportData = async (
   return studentPermits;
 };
 
+const getTeacherReportData = async (prisma: PrismaClient) => {
+  const teacherData = await prisma.users.findMany({
+    select: {
+      username: true,
+      fullname: true,
+      nip: true,
+      user_roles: {
+        select: {
+          role: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return teacherData;
+};
+
 export const reportService = {
   getStudentPermitReportData,
+  getTeacherReportData,
 };
