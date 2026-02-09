@@ -1,7 +1,7 @@
 import z from "zod";
 import { student_permit_status } from "../../generated/prisma/enums.js";
 
-const getReportSchema = z.object({
+const getStudentPermitReportSchema = z.object({
   query: z.object({
     start_date: z.string().min(1, "Start date is required"),
     end_date: z.string().min(1, "End date is required"),
@@ -10,5 +10,5 @@ const getReportSchema = z.object({
 });
 
 export const reportSchema = {
-  getReportSchema,
+  getStudentPermitReportSchema,
 };

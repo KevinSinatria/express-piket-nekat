@@ -10,18 +10,29 @@ import { reportSchema } from "./report.schema.js";
 const router = Router();
 
 router.use(authMiddleware);
-router.use(roleCheckMiddleware(["ADMIN", "PIKET"]));
+const adminAndPiketOnly = roleCheckMiddleware(["ADMIN", "PIKET"]);
+const adminOnly = roleCheckMiddleware(["ADMIN"]);
 
 router.get(
   "/student-permits",
-  validate(reportSchema.getReportSchema),
-  reportController.getStudentPermits
+  adminAndPiketOnly,
+  validate(reportSchema.getStudentPermitReportSchema),
+  reportController.getStudentPermits,
 );
 
 router.get(
   "/student-permits/export",
-  validate(reportSchema.getReportSchema),
-  reportController.exportStudentPermits
+  adminAndPiketOnly,
+  validate(reportSchema.getStudentPermitReportSchema),
+  reportController.exportStudentPermits,
+);
+
+router.get("/teachers", adminOnly, reportController.getTeacherReportData);
+
+router.get(
+  "/teachers/export",
+  adminOnly,
+  reportController.exportTeacherReportData,
 );
 
 export default router;

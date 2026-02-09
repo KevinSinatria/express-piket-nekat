@@ -6,12 +6,12 @@ import ExcelJS from "exceljs";
 const getStudentPermits = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const data = await reportService.getStudentPermitReportData(
       prisma,
-      req.query as any
+      req.query as any,
     );
     res.status(200).json({
       success: true,
@@ -26,12 +26,12 @@ const getStudentPermits = async (
 const exportStudentPermits = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const data = await reportService.getStudentPermitReportData(
       prisma,
-      req.query as any
+      req.query as any,
     );
 
     const workbook = new ExcelJS.Workbook();
@@ -92,11 +92,96 @@ const exportStudentPermits = async (
 
     res.setHeader(
       "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     );
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=student-permit-report-${Date.now()}.xlsx`
+      `attachment; filename=student-permit-report-${Date.now()}.xlsx`,
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTeacherReportData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await reportService.getTeacherReportData(prisma);
+    res.status(200).json({
+      success: true,
+      message: "Teacher report data fetched successfully",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const exportTeacherReportData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await reportService.getTeacherReportData(prisma);
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Teacher Report");
+
+    worksheet.columns = [
+      { header: "No", key: "no", width: 5 },
+      { header: "Username", key: "username", width: 20 },
+      { header: "Nama", key: "name", width: 25 },
+      { header: "NIP", key: "nip", width: 15 },
+      { header: "Role", key: "role", width: 20 },
+    ];
+
+    // Style Header
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    headerRow.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF4F81BD" }, // Blue header
+    };
+    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+
+    // Add Data
+    data.forEach((item, index) => {
+      worksheet.addRow({
+        no: index + 1,
+        username: item.username,
+        name: item.fullname,
+        nip: item.nip,
+        role: item.user_roles.map((role) => role.role.name).join(", "),
+      });
+    });
+
+    // border for data cells
+    worksheet.eachRow((row, rowNumber) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          left: { style: "thin" },
+          bottom: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    );
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=teacher-report-${Date.now()}.xlsx`,
     );
 
     await workbook.xlsx.write(res);
@@ -109,4 +194,6 @@ const exportStudentPermits = async (
 export const reportController = {
   getStudentPermits,
   exportStudentPermits,
+  getTeacherReportData,
+  exportTeacherReportData,
 };
