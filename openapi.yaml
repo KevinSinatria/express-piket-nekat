@@ -1229,6 +1229,41 @@ paths:
           $ref: '#/components/responses/Unauthorized'
       security:
         - bearerAuth: []
+  /reports/teachers:
+    get:
+      summary: Mendapatkan Laporan Data Guru
+      deprecated: false
+      description: Mengambil data laporan guru beserta role-nya. Hanya diakses oleh ADMIN.
+      tags:
+        - Reports
+      parameters: []
+      responses:
+        '200':
+          description: Data laporan guru berhasil diambil.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+  /reports/teachers/export:
+    get:
+      summary: Export Laporan Data Guru (Excel)
+      deprecated: false
+      description: Mengunduh laporan data guru dalam format Excel. Hanya diakses oleh ADMIN.
+      tags:
+        - Reports
+      parameters: []
+      responses:
+        '200':
+          description: File Excel berhasil diunduh.
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
 components:
   schemas: {}
   responses:
